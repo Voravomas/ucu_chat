@@ -1,16 +1,23 @@
-# ucuchat
+# UCUChat
 
 A new Flutter project.
 
-## Getting Started
+## Description
+Simplified version of Telegram<br />
+User registration and authentication (logging in)<br />
+Predefined chats (student-student, student-teacher, teacher-teacher)<br />
+Text chats only<br />
 
-This project is a starting point for a Flutter application.
+## Tools
+Flutter<br />
+Firebase
 
-A few resources to get you started if this is your first Flutter project:
+## Screens
+Starting page (description of a project and “Get started” button)<br />
+Login page (nickname, password)<br />
+Sign up page (nickname, password, email, phone number)<br />
+Choose chat page (s-s, s-t, t-t)<br />
+Chat page (see only text messages)<br />
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Figma
+[Link](https://www.figma.com/file/dcgWl3LbbhitSxivia34bD/UCUchat?node-id=0%3A1)
