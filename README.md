@@ -21,10 +21,10 @@ Text chats only<br />
 
 ## Screens
 1. Starting page (description of a project and “Get started” button)<br />
-2. Login page (nickname, password)<br />
-3. Sign up page (nickname, password, email, phone number)<br />
+2. Login page (Name, password)<br />
+3. Sign up page (Name, password, email, phone number)<br />
 4. Choose chat page (s-s, s-t, t-t)<br />
-5. User page (nickname, email, phone number)<br/>
+5. User page (Name, email, phone number)<br/>
 6. Chat page (see only text messages)<br />
 
 ## Figma
