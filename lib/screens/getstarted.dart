@@ -16,7 +16,7 @@ Container getWelcomeText(text) {
   return Container(
       margin: const EdgeInsets.only(top: 100.0, bottom: 50.0),
       child: Center(
-        child: Text(text, style: AppTextStyles.robotoPurple21Bold),
+        child: Text(text, style: AppTextStyles.robotoRed21Bold),
       ));
 }
 

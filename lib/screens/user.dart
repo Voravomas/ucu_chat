@@ -10,7 +10,7 @@ Container getTopText(text) {
     margin: const EdgeInsets.only(top: 80.0, bottom: 120.0),
     child: Text(
       text,
-      style: AppTextStyles.robotoPurple21Bold,
+      style: AppTextStyles.robotoRed21Bold,
     ),
   );
 }
@@ -19,7 +19,7 @@ Container getPairText(key, value) {
   return Container(
     child: Column(
       children: [
-        Text(key, style: AppTextStyles.robotoPurple18Bold),
+        Text(key, style: AppTextStyles.robotoRed18Bold),
         Text(value, style: AppTextStyles.robotoBlack18Reg),
       ],
     ),
