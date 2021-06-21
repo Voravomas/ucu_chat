@@ -8,6 +8,12 @@ class AppTextStyles {
       fontFamily: "Roboto",
       fontSize: 21);
 
+  static const TextStyle robotoPurple18Bold = TextStyle(
+      color: primaryColor,
+      fontWeight: FontWeight.w700,
+      fontFamily: "Roboto",
+      fontSize: 18);
+
   static const TextStyle robotoWhite21Bold = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.w700,
@@ -17,6 +23,12 @@ class AppTextStyles {
   static const TextStyle robotoWhite18Bold = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.w700,
+      fontFamily: "Roboto",
+      fontSize: 18);
+
+  static const TextStyle robotoBlack18Reg = TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.normal,
       fontFamily: "Roboto",
       fontSize: 18);
 }
