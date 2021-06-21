@@ -10,6 +10,7 @@ import 'screens/signin.dart';
 import 'screens/signup.dart';
 import 'screens/selectchat.dart';
 import 'screens/chat.dart';
+import 'screens/user.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,7 @@ Future<void> main() async {
       '/': (context) => GetStarted(),
       '/signIn': (context) => SignIn(),
       '/signUp': (context) => SignUp(),
+      '/user': (context) => User(),
       '/selectChat': (context) => SelectChat(),
       '/selectChat/chat': (context) => Chat(),
     },

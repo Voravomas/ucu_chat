@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ucuchat/utils.dart';
 
-class SignUp extends StatelessWidget {
+class User extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,8 +10,9 @@ class SignUp extends StatelessWidget {
         ),
         body: Column(
           children: [
-            getText("Enter your\nLogin\nEmail\nPhone\nPassword"),
-            Center(child: getSomebutton(context, 'Register', 'pop')),
+            getText("Name\nAbraham Lincoln\nEmail\n" +
+                "lincoln@ucu.edu.ua\nPhone number\n+380123456789"),
+            Center(child: getSomebutton(context, 'Back to chats', 'pop')),
           ],
         ));
   }

@@ -5,7 +5,11 @@ ElevatedButton getSomebutton(context, text, url) {
   return ElevatedButton(
       child: Text(text),
       onPressed: () {
-        Navigator.pushNamed(context, url);
+        if (url == 'pop') {
+          Navigator.pop(context);
+        } else {
+          Navigator.pushNamed(context, url);
+        }
       },
       style: ElevatedButton.styleFrom(
         primary: primaryColor,

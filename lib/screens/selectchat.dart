@@ -20,6 +20,9 @@ class SelectChat extends StatelessWidget {
             Center(
                 child: getSomebutton(
                     context, 'Teachers-Teachers', '/selectChat/chat')),
+            getText("      "), // rewrite this
+            Center(child: getSomebutton(context, 'My account', '/user')),
+            Center(child: getSomebutton(context, 'Sign out', '/')),
           ],
         ));
   }
