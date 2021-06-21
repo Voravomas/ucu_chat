@@ -12,7 +12,7 @@ class SignIn extends StatelessWidget {
     }
     return Scaffold(
         appBar: AppBar(
-          title: Text('UCU Chat'),
+          title: getAppBarText('UCU Chat'),
         ),
         body: Column(
           children: [

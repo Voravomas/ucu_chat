@@ -6,7 +6,7 @@ class SelectChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('UCU Chat'),
+          title: getAppBarText('UCU Chat'),
         ),
         body: Column(
           children: [
