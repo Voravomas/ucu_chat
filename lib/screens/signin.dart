@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/constants.dart';
@@ -76,14 +77,21 @@ Container authAndRedirect(context, login, password, text, url) {
               ))));
 }
 
-Container getGoSignUp() {
+Container getGoSignUp(context) {
   return Container(
-    padding: EdgeInsets.only(top: 40.0),
-    child: Text(
-      "Don’t have an account? Sign up",
-      style: AppTextStyles.robotoBlack16Reg,
-    ),
-  );
+      padding: EdgeInsets.only(top: 40.0),
+      child: new RichText(
+          text: new TextSpan(
+              text: 'Don’t have an account? ',
+              style: AppTextStyles.robotoBlack18Reg,
+              children: [
+            new TextSpan(
+              text: 'Sign up',
+              style: AppTextStyles.robotoRed18Bold,
+              recognizer: new TapGestureRecognizer()
+                ..onTap = () => Navigator.pushNamed(context, "/signUp"),
+            )
+          ])));
 }
 
 class SignIn extends StatelessWidget {
@@ -104,7 +112,7 @@ class SignIn extends StatelessWidget {
             getTopText("Sign in"),
             LoginPassField(),
             authAndRedirect(context, "aaa", "aaa", "Sign In", "/selectChat"),
-            getGoSignUp()
+            getGoSignUp(context)
           ],
         ));
   }
