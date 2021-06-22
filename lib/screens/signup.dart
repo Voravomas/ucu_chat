@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/net/flutterfire.dart';
-import 'package:ucuchat/screens/selectchat.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/screens/signin.dart';
 import 'package:ucuchat/constants.dart';
