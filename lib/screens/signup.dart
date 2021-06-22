@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ucuchat/net/flutterfire.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/screens/signin.dart';
 import 'package:ucuchat/constants.dart';
@@ -21,25 +22,27 @@ Container getGoSignIn(context) {
           ])));
 }
 
-Container registerAndRedirect(context, login, password, text, url) {
-  // add registration
-  return Container(
-      padding: EdgeInsets.only(top: 70.0),
-      child: ConstrainedBox(
-          constraints: BoxConstraints.tightFor(width: 250, height: 60),
-          child: ElevatedButton(
-              child: Text(text, style: AppTextStyles.robotoWhite18Bold),
-              onPressed: () {
-                if (url == 'pop') {
-                  Navigator.pop(context);
-                } else {
-                  Navigator.pushNamed(context, url);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                primary: primaryColor,
-              ))));
-}
+// Container registerAndRedirect(context, login, password, text, url) {
+//   // add registration
+//   return Container(
+//       padding: EdgeInsets.only(top: 70.0),
+//       child: ConstrainedBox(
+//           constraints: BoxConstraints.tightFor(width: 250, height: 60),
+//           child: ElevatedButton(
+//               child: Text(text, style: AppTextStyles.robotoWhite18Bold),
+//               onPressed: () async {
+//                 bool shouldNavigate =
+//                     await register(, email, phone, password);
+//                 if (url == 'pop') {
+//                   Navigator.pop(context);
+//                 } else {
+//                   Navigator.pushNamed(context, url);
+//                 }
+//               },
+//               style: ElevatedButton.styleFrom(
+//                 primary: primaryColor,
+//               ))));
+// }
 
 class RegisterPassField extends StatefulWidget {
   @override
@@ -47,26 +50,51 @@ class RegisterPassField extends StatefulWidget {
 }
 
 class RegisterPassFieldState extends State<RegisterPassField> {
-  final emailField = getInputPage("Enter your email");
-  final passwordField = getInputPage("Enter your password");
-  final nameField = getInputPage("Enter your name");
-  final phoneField = getInputPage("Enter your phone number");
+  TextEditingController _registerEmailController = TextEditingController();
+  TextEditingController _registerPasswordController = TextEditingController();
+  TextEditingController _registerNameController = TextEditingController();
+  TextEditingController _registerPhoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-            child: nameField,
+            child:
+                getInputPage("Enter your name", _registerNameController, false),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
         Padding(
-            child: emailField,
+            child: getInputPage(
+                "Enter your email", _registerEmailController, false),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
         Padding(
-            child: phoneField,
+            child: getInputPage(
+                "Enter your phone number", _registerPhoneController, false),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
         Padding(
-            child: passwordField,
-            padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0))
+            child: getInputPage(
+                "Enter your password", _registerPasswordController, true),
+            padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
+        Container(
+            padding: EdgeInsets.only(top: 70.0),
+            child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: 250, height: 60),
+                child: ElevatedButton(
+                    child:
+                        Text('Sign Up', style: AppTextStyles.robotoWhite18Bold),
+                    onPressed: () async {
+                      bool shouldNavigate = await register(
+                          _registerNameController.text,
+                          _registerEmailController.text,
+                          _registerPhoneController.text,
+                          _registerPasswordController.text);
+                      if (shouldNavigate) {
+                        Navigator.pushNamed(context, '/selectChat');
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: primaryColor,
+                    ))))
       ],
     );
   }
@@ -83,7 +111,8 @@ class SignUp extends StatelessWidget {
           children: [
             getTopText("Sign up"),
             RegisterPassField(),
-            authAndRedirect(context, "aaa", "aaa", "Sign Up", "/selectChat"),
+            // registerAndRedirect(
+            //     context, "aaa", "aaa", "Sign Up", "/selectChat"),
             getGoSignIn(context),
           ],
         ));

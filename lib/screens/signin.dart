@@ -19,42 +19,46 @@ class LoginPassField extends StatefulWidget {
 }
 
 class LoginPassFieldState extends State<LoginPassField> {
-  final emailField = getInputPage("Enter your email");
-  final passwordField = getInputPage("Enter your password");
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-            child: emailField,
+            child: getInputPage("Enter your email", _emailController, false),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
         Padding(
-            child: passwordField,
-            padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0))
+            child:
+                getInputPage("Enter your password", _passwordController, true),
+            padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
       ],
     );
   }
 }
 
-TextField getInputPage(text) {
+TextField getInputPage(text, controller, obscure) {
   const customBorderRadius = BorderRadius.all(Radius.circular(27.0));
   return TextField(
+      obscureText: obscure,
+      controller: controller,
       decoration: InputDecoration(
-    hintText: text,
-    hintStyle: AppTextStyles.robotoBlack16Reg,
-    fillColor: greyColor,
-    // when field is not selected
-    enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: greyColor),
-        borderRadius: customBorderRadius),
-    // when field is selected
-    border: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.blue),
-        borderRadius: customBorderRadius),
-    filled: true,
-    contentPadding:
-        EdgeInsets.only(top: 21.0, bottom: 21.0, left: 20.0, right: 20.0),
-  ));
+        hintText: text,
+        hintStyle: AppTextStyles.robotoBlack16Reg,
+        fillColor: greyColor,
+        // when field is not selected
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: greyColor),
+            borderRadius: customBorderRadius),
+        // when field is selected
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+            borderRadius: customBorderRadius),
+        filled: true,
+        contentPadding:
+            EdgeInsets.only(top: 21.0, bottom: 21.0, left: 20.0, right: 20.0),
+      ));
 }
 
 Container authAndRedirect(context, login, password, text, url) {
