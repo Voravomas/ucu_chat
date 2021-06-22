@@ -46,7 +46,7 @@ class LoginPassFieldState extends State<LoginPassField> {
                           _emailController.text, _passwordController.text);
                       if (shouldNavigate) {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, '/selectChat', (route) => false);
+                            context, '/home', (route) => false);
                       }
                     },
                     style: ElevatedButton.styleFrom(

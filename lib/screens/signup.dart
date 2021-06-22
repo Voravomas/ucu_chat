@@ -100,7 +100,7 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                           _registerPasswordController.text);
                       if (shouldNavigate) {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, '/selectChat', (route) => false);
+                            context, '/home', (route) => false);
                       }
                     },
                     style: ElevatedButton.styleFrom(
