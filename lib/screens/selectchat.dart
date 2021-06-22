@@ -42,7 +42,7 @@ Container getBottomButtons(context) {
     child: Column(
       children: [
         getRedButtonWithPadding(context, 'My account', '/user'),
-        getRedButtonWithPadding(context, 'Sign out', '/')
+        getRedButtonWithPadding(context, 'Sign out', 'sign-out')
       ],
     ),
     margin: const EdgeInsets.only(top: 35.0),

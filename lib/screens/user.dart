@@ -39,7 +39,7 @@ Container getUserInfoText(name, email, phone) {
   );
 }
 
-class User extends StatelessWidget {
+class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
