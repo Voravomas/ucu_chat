@@ -43,19 +43,19 @@ class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: getAppBarText('UCU Chat'),
-        ),
+        // appBar: AppBar(
+        //   title: getAppBarText('UCU Chat'),
+        // ),
         body: Column(
-          children: [
-            getTopText("User Page"),
-            getUserInfoText(const_name, const_email, const_phone),
-            Center(
-                child: Container(
-              child: getRedbutton(context, 'Back to chats', 'pop'),
-              padding: EdgeInsets.only(top: 150.0),
-            )),
-          ],
-        ));
+      children: [
+        getTopText("User Page"),
+        getUserInfoText(const_name, const_email, const_phone),
+        Center(
+            child: Container(
+          // child: getRedbutton(context, 'Back to chats', 'pop'),
+          padding: EdgeInsets.only(top: 150.0),
+        )),
+      ],
+    ));
   }
 }

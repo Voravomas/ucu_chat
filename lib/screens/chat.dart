@@ -5,14 +5,14 @@ class Chat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('UCU Chat'),
-        ),
+        // appBar: AppBar(
+        //   title: Text('UCU Chat'),
+        // ),
         body: Column(
-          children: [
-            getText("Mykyta [20:23]: Hello World!"),
-            Center(child: getMockedbutton(context, 'Send')),
-          ],
-        ));
+      children: [
+        getText("Mykyta [20:23]: Hello World!"),
+        Center(child: getMockedbutton(context, 'Send')),
+      ],
+    ));
   }
 }

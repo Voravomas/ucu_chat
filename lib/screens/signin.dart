@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/net/flutterfire.dart';
-import 'package:ucuchat/screens/selectchat.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/constants.dart';
 
@@ -47,7 +46,7 @@ class LoginPassFieldState extends State<LoginPassField> {
                           _emailController.text, _passwordController.text);
                       if (shouldNavigate) {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, '/selectChat', (route) => false);
+                            context, '/home', (route) => false);
                       }
                     },
                     style: ElevatedButton.styleFrom(

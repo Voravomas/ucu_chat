@@ -9,7 +9,7 @@ import 'constants.dart';
 import 'screens/getstarted.dart';
 import 'screens/signin.dart';
 import 'screens/signup.dart';
-import 'screens/selectchat.dart';
+import 'screens/home.dart';
 import 'screens/chat.dart';
 import 'screens/user.dart';
 
@@ -20,15 +20,14 @@ Future<void> main() async {
     theme: ThemeData(
       primaryColor: primaryColor,
     ),
-    initialRoute:
-        FirebaseAuth.instance.currentUser == null ? '/' : '/selectChat',
+    initialRoute: FirebaseAuth.instance.currentUser == null ? '/' : '/home',
     routes: {
       '/': (context) => GetStarted(),
       '/signIn': (context) => SignIn(),
       '/signUp': (context) => SignUp(),
       '/user': (context) => UserPage(),
-      '/selectChat': (context) => SelectChat(),
-      '/selectChat/chat': (context) => Chat(),
+      '/home': (context) => Home(),
+      // '/selectChat/chat': (context) => Chat(),
     },
   ));
 }
