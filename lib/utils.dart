@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/constants.dart';
 
@@ -90,6 +91,9 @@ ConstrainedBox getRedbutton(context, text, url) {
           onPressed: () {
             if (url == 'pop') {
               Navigator.pop(context);
+            } else if (url == 'sign-out') {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
             } else {
               Navigator.pushNamed(context, url);
             }

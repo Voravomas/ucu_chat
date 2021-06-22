@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -19,12 +20,13 @@ Future<void> main() async {
     theme: ThemeData(
       primaryColor: primaryColor,
     ),
-    initialRoute: '/',
+    initialRoute:
+        FirebaseAuth.instance.currentUser == null ? '/' : '/selectChat',
     routes: {
       '/': (context) => GetStarted(),
       '/signIn': (context) => SignIn(),
       '/signUp': (context) => SignUp(),
-      '/user': (context) => User(),
+      '/user': (context) => UserPage(),
       '/selectChat': (context) => SelectChat(),
       '/selectChat/chat': (context) => Chat(),
     },

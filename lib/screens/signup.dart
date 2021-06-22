@@ -100,11 +100,8 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                           _registerPhoneController.text,
                           _registerPasswordController.text);
                       if (shouldNavigate) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SelectChat()));
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/selectChat', (route) => false);
                       }
                     },
                     style: ElevatedButton.styleFrom(

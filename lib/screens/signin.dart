@@ -46,11 +46,8 @@ class LoginPassFieldState extends State<LoginPassField> {
                       bool shouldNavigate = await signIn(
                           _emailController.text, _passwordController.text);
                       if (shouldNavigate) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SelectChat()));
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/selectChat', (route) => false);
                       }
                     },
                     style: ElevatedButton.styleFrom(
