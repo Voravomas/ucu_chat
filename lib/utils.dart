@@ -31,6 +31,9 @@ class AppTextStyles {
       fontWeight: FontWeight.normal,
       fontFamily: "Roboto",
       fontSize: 18);
+
+  static const TextStyle robotoBlack16Reg = TextStyle(
+      fontWeight: FontWeight.normal, fontFamily: "Roboto", fontSize: 16);
 }
 
 ElevatedButton getSomebutton(context, text, url) {
