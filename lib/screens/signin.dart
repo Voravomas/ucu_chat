@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ucuchat/net/flutterfire.dart';
+import 'package:ucuchat/screens/selectchat.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/constants.dart';
 
@@ -33,6 +35,27 @@ class LoginPassFieldState extends State<LoginPassField> {
             child:
                 getInputPage("Enter your password", _passwordController, true),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
+        Container(
+            padding: EdgeInsets.only(top: 70.0),
+            child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(width: 250, height: 60),
+                child: ElevatedButton(
+                    child:
+                        Text('Sign In', style: AppTextStyles.robotoWhite18Bold),
+                    onPressed: () async {
+                      bool shouldNavigate = await signIn(
+                          _emailController.text, _passwordController.text);
+                      if (shouldNavigate) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SelectChat()));
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: primaryColor,
+                    )))),
       ],
     );
   }
@@ -61,25 +84,25 @@ TextField getInputPage(text, controller, obscure) {
       ));
 }
 
-Container authAndRedirect(context, login, password, text, url) {
-  // add authentication
-  return Container(
-      padding: EdgeInsets.only(top: 70.0),
-      child: ConstrainedBox(
-          constraints: BoxConstraints.tightFor(width: 250, height: 60),
-          child: ElevatedButton(
-              child: Text(text, style: AppTextStyles.robotoWhite18Bold),
-              onPressed: () {
-                if (url == 'pop') {
-                  Navigator.pop(context);
-                } else {
-                  Navigator.pushNamed(context, url);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                primary: primaryColor,
-              ))));
-}
+// Container authAndRedirect(context, login, password, text, url) {
+//   // add authentication
+//   return Container(
+//       padding: EdgeInsets.only(top: 70.0),
+//       child: ConstrainedBox(
+//           constraints: BoxConstraints.tightFor(width: 250, height: 60),
+//           child: ElevatedButton(
+//               child: Text(text, style: AppTextStyles.robotoWhite18Bold),
+//               onPressed: () {
+//                 if (url == 'pop') {
+//                   Navigator.pop(context);
+//                 } else {
+//                   Navigator.pushNamed(context, url);
+//                 }
+//               },
+//               style: ElevatedButton.styleFrom(
+//                 primary: primaryColor,
+//               ))));
+// }
 
 Container getGoSignUp(context) {
   return Container(
@@ -115,7 +138,7 @@ class SignIn extends StatelessWidget {
           children: [
             getTopText("Sign in"),
             LoginPassField(),
-            authAndRedirect(context, "aaa", "aaa", "Sign In", "/selectChat"),
+            // authAndRedirect(context, "aaa", "aaa", "Sign In", "/selectChat"),
             getGoSignUp(context)
           ],
         ));

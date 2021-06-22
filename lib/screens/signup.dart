@@ -1,9 +1,20 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/net/flutterfire.dart';
+import 'package:ucuchat/screens/selectchat.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/screens/signin.dart';
 import 'package:ucuchat/constants.dart';
+
+Container getTopText(text) {
+  return Container(
+    margin: const EdgeInsets.only(top: 80.0, bottom: 20.0),
+    child: Text(
+      text,
+      style: AppTextStyles.robotoRed21Bold,
+    ),
+  );
+}
 
 Container getGoSignIn(context) {
   return Container(
@@ -89,7 +100,11 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                           _registerPhoneController.text,
                           _registerPasswordController.text);
                       if (shouldNavigate) {
-                        Navigator.pushNamed(context, '/selectChat');
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SelectChat()));
                       }
                     },
                     style: ElevatedButton.styleFrom(
