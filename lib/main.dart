@@ -10,7 +10,7 @@ import 'screens/getstarted.dart';
 import 'screens/signin.dart';
 import 'screens/signup.dart';
 import 'screens/home.dart';
-import 'screens/chat.dart';
+import 'screens/all_chats.dart';
 import 'screens/user.dart';
 
 Future<void> main() async {
