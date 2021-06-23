@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ucuchat/net/flutterfire.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/constants.dart';
+import 'package:ucuchat/validation.dart';
 
 Container getTopText(text) {
   return Container(
@@ -17,6 +18,28 @@ Container getTopText(text) {
 class LoginPassField extends StatefulWidget {
   @override
   LoginPassFieldState createState() => LoginPassFieldState();
+}
+
+Future<bool> validateAndSignIn(context, email, password) async {
+  if (validateEmail(email.text) == false) {
+    showAlertDialog(context, "You have entered invalid email");
+    email.clear();
+    return false;
+  }
+  if (validatePassword(password.text) == false) {
+    showAlertDialog(context, "You have entered invalid password");
+    password.clear();
+    return false;
+  }
+  Map<String, String> resFromApi = await signIn(email.text, password.text);
+  print(resFromApi);
+  if (resFromApi["ok"] == "false") {
+    showAlertDialog(context, resFromApi["msg"]);
+    email.clear();
+    password.clear();
+    return false;
+  }
+  return true;
 }
 
 class LoginPassFieldState extends State<LoginPassField> {
@@ -42,8 +65,8 @@ class LoginPassFieldState extends State<LoginPassField> {
                     child:
                         Text('Sign In', style: AppTextStyles.robotoWhite18Bold),
                     onPressed: () async {
-                      bool shouldNavigate = await signIn(
-                          _emailController.text, _passwordController.text);
+                      bool shouldNavigate = await validateAndSignIn(
+                          context, _emailController, _passwordController);
                       if (shouldNavigate) {
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/home', (route) => false);
