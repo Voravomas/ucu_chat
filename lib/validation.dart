@@ -1,12 +1,12 @@
-// TODO: Change regex, so it will be the same as in google
-// example
-// here ok: aaaa@aaaa
-// google bad: aaaa@aaaa
 RegExp emailRegex = RegExp(
-    r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
 bool validateEmail(String emailOrig) {
   String email = emailOrig.trim();
+  // invalid email length
+  if (email.length > 256) {
+    return false;
+  }
   // valid email regexp
   return emailRegex.hasMatch(email);
 }
