@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/utils.dart';
-import 'package:ucuchat/screens/chat.dart' as chatsScreen;
+import 'package:ucuchat/screens/all_chats.dart' as chatsScreen;
 import 'package:ucuchat/screens/user.dart' as userScreen;
 import 'package:ucuchat/screens/search.dart' as searchScreen;
 
@@ -38,7 +38,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ])),
       body: new TabBarView(
         children: <Widget>[
-          new chatsScreen.Chat(),
+          new chatsScreen.AllChats(),
           new searchScreen.Search(),
           new userScreen.UserPage(),
         ],
@@ -57,41 +57,3 @@ Container getTopText(text) {
     ),
   );
 }
-
-// Container getChatButton(context, text, url) {
-//   return Container(
-//     child: getGreybutton(context, text, url),
-//     margin: const EdgeInsets.only(top: 35.0),
-//   );
-// }
-
-// Container getChatList(context) {
-//   return Container(
-//     child: Column(
-//       children: [
-//         getChatButton(context, 'Students-Students', '/selectChat/chat'),
-//         getChatButton(context, 'Students-Teachers', '/selectChat/chat'),
-//         getChatButton(context, 'Teachers-Teachers', '/selectChat/chat')
-//       ],
-//     ),
-//   );
-// }
-
-// Container getRedButtonWithPadding(context, text, url) {
-//   return Container(
-//     child: getRedbutton(context, text, url),
-//     margin: const EdgeInsets.only(top: 35.0),
-//   );
-// }
-
-// Container getBottomButtons(context) {
-//   return Container(
-//     child: Column(
-//       children: [
-//         getRedButtonWithPadding(context, 'My account', '/user'),
-//         getRedButtonWithPadding(context, 'Sign out', 'sign-out')
-//       ],
-//     ),
-//     margin: const EdgeInsets.only(top: 35.0),
-//   );
-// }
