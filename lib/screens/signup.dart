@@ -4,6 +4,7 @@ import 'package:ucuchat/net/flutterfire.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/screens/signin.dart';
 import 'package:ucuchat/constants.dart';
+import 'package:ucuchat/validation.dart';
 
 Container getTopText(text) {
   return Container(
@@ -59,6 +60,36 @@ class RegisterPassField extends StatefulWidget {
   RegisterPassFieldState createState() => RegisterPassFieldState();
 }
 
+Future<bool> validateAndRegister(context, name, email, phone, password) async {
+  if (validateName(name.text) == false) {
+    showAlertDialog(context, "You have entered invalid name");
+    name.clear();
+    return false;
+  }
+  if (validateEmail(email.text) == false) {
+    showAlertDialog(context, "You have entered invalid email");
+    email.clear();
+    return false;
+  }
+  if (validatePhone(phone.text) == false) {
+    showAlertDialog(context, "You have entered invalid phone");
+    phone.clear();
+    return false;
+  }
+  if (validatePassword(password.text) == false) {
+    showAlertDialog(context, "You have entered invalid password");
+    password.clear();
+    return false;
+  }
+  Map<String, String> resFromApi =
+      await register(name.text, email.text, phone.text, password.text);
+  if (resFromApi["ok"] == "false") {
+    showAlertDialog(context, resFromApi["msg"]);
+    return false;
+  }
+  return true;
+}
+
 class RegisterPassFieldState extends State<RegisterPassField> {
   TextEditingController _registerEmailController = TextEditingController();
   TextEditingController _registerPasswordController = TextEditingController();
@@ -78,8 +109,8 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                 "Enter your email", _registerEmailController, false),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
         Padding(
-            child: getInputPage(
-                "Enter your phone number", _registerPhoneController, false),
+            child: getInputPage("Enter your phone number (+380)",
+                _registerPhoneController, false),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
         Padding(
             child: getInputPage(
@@ -93,11 +124,12 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                     child:
                         Text('Sign Up', style: AppTextStyles.robotoWhite18Bold),
                     onPressed: () async {
-                      bool shouldNavigate = await register(
-                          _registerNameController.text,
-                          _registerEmailController.text,
-                          _registerPhoneController.text,
-                          _registerPasswordController.text);
+                      bool shouldNavigate = await validateAndRegister(
+                          context,
+                          _registerNameController,
+                          _registerEmailController,
+                          _registerPhoneController,
+                          _registerPasswordController);
                       if (shouldNavigate) {
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/home', (route) => false);
