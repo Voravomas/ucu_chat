@@ -1,10 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ucuchat/net/api_methods.dart';
 import 'package:ucuchat/net/flutterfire.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/screens/signin.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/validation.dart';
+import 'package:ucuchat/models/user_model.dart';
+import 'dart:math';
 
 Container getTopText(text) {
   return Container(
@@ -55,12 +58,60 @@ Container getGoSignIn(context) {
 //               ))));
 // }
 
+enum SingingCharacter { student, teacher }
+
+/// This is the stateful widget that the main application instantiates.
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  SingingCharacter? _character = SingingCharacter.student;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: const Text('I am Student'),
+          leading: Radio<SingingCharacter>(
+            value: SingingCharacter.student,
+            groupValue: _character,
+            onChanged: (SingingCharacter? value) {
+              setState(() {
+                _character = value;
+              });
+            },
+          ),
+        ),
+        ListTile(
+          title: const Text('I am Teacher'),
+          leading: Radio<SingingCharacter>(
+            value: SingingCharacter.teacher,
+            groupValue: _character,
+            onChanged: (SingingCharacter? value) {
+              setState(() {
+                _character = value;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class RegisterPassField extends StatefulWidget {
   @override
   RegisterPassFieldState createState() => RegisterPassFieldState();
 }
 
-Future<bool> validateAndRegister(context, name, email, phone, password) async {
+Future<bool> validateAndRegister(
+    context, occupation, name, email, phone, password) async {
   if (validateName(name.text) == false) {
     showAlertDialog(context, "You have entered invalid name");
     name.clear();
@@ -87,6 +138,18 @@ Future<bool> validateAndRegister(context, name, email, phone, password) async {
     showAlertDialog(context, resFromApi["msg"]);
     return false;
   }
+  // img is hardcoded
+  String imgUrl = defaultImg;
+
+  UserSignUp user = UserSignUp(
+      name: name.text,
+      imageUrl: imgUrl,
+      email: email.text,
+      password: password.text,
+      phone: phone.text,
+      occupation: occupation);
+  addUser(user);
+  print("EXITED");
   return true;
 }
 
@@ -95,6 +158,7 @@ class RegisterPassFieldState extends State<RegisterPassField> {
   TextEditingController _registerPasswordController = TextEditingController();
   TextEditingController _registerNameController = TextEditingController();
   TextEditingController _registerPhoneController = TextEditingController();
+  MyStatefulWidget radioButton = MyStatefulWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +180,7 @@ class RegisterPassFieldState extends State<RegisterPassField> {
             child: getInputPage(
                 "Enter your password", _registerPasswordController, true),
             padding: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0)),
+        radioButton,
         Container(
             padding: EdgeInsets.only(top: 70.0),
             child: ConstrainedBox(
@@ -126,6 +191,9 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                     onPressed: () async {
                       bool shouldNavigate = await validateAndRegister(
                           context,
+                          // TODO: get response from radio button
+                          // now it is hardcoded
+                          "Student",
                           _registerNameController,
                           _registerEmailController,
                           _registerPhoneController,
