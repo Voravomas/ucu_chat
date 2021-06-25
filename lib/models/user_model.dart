@@ -1,8 +1,19 @@
+import 'package:flutter/material.dart';
+
 class User {
-  final int id;
+  final String id;
   final String name;
   final String imageUrl;
-  User({required this.id, required this.name, required this.imageUrl});
+  final String occupation;
+  final String email;
+  final String phone;
+  User(
+      {required this.id,
+      required this.name,
+      required this.imageUrl,
+      required this.occupation,
+      required this.email,
+      required this.phone});
 }
 
 class UserSignUp {

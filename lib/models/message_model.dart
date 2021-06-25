@@ -19,46 +19,70 @@ class Message {
 
 // YOU - current user
 final User currentUser = User(
-  id: 0,
+  id: '0',
   name: 'Current User',
   imageUrl: 'assets/images/greg.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 
 // USERS
 final User greg = User(
-  id: 1,
+  id: '1',
   name: 'Greg',
   imageUrl: 'assets/images/greg.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 final User james = User(
-  id: 2,
+  id: '2',
   name: 'James',
   imageUrl: 'assets/images/james.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 final User john = User(
-  id: 3,
+  id: '3',
   name: 'John',
   imageUrl: 'assets/images/john.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 final User olivia = User(
-  id: 4,
+  id: '4',
   name: 'Olivia',
   imageUrl: 'assets/images/olivia.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 final User sam = User(
-  id: 5,
+  id: '5',
   name: 'Sam',
   imageUrl: 'assets/images/sam.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 final User sophia = User(
-  id: 6,
+  id: '6',
   name: 'Sophia',
   imageUrl: 'assets/images/sophia.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 final User steven = User(
-  id: 7,
+  id: '7',
   name: 'Steven',
   imageUrl: 'assets/images/steven.jpg',
+  occupation: 'Student',
+  email: 'test@gmail.com',
+  phone: '0671111111',
 );
 
 // FAVORITE CONTACTS

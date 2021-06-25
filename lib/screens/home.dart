@@ -39,7 +39,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       body: new TabBarView(
         children: <Widget>[
           new chatsScreen.AllChats(),
-          new searchScreen.Search(),
+          new searchScreen.SearchUsers(),
           new userScreen.UserPage(),
         ],
         controller: tabController,
