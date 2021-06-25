@@ -58,11 +58,13 @@ Container getGoSignIn(context) {
 //               ))));
 // }
 
-enum SingingCharacter { student, teacher }
+enum UserOccupation { student, teacher }
 
 /// This is the stateful widget that the main application instantiates.
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+  const MyStatefulWidget({Key? key, required this.characterSetter})
+      : super(key: key);
+  final void Function(UserOccupation) characterSetter;
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
@@ -70,7 +72,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  SingingCharacter? _character = SingingCharacter.student;
+  UserOccupation? _character = UserOccupation.student;
 
   @override
   Widget build(BuildContext context) {
@@ -78,24 +80,30 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       children: <Widget>[
         ListTile(
           title: const Text('I am Student'),
-          leading: Radio<SingingCharacter>(
-            value: SingingCharacter.student,
+          leading: Radio<UserOccupation>(
+            value: UserOccupation.student,
             groupValue: _character,
-            onChanged: (SingingCharacter? value) {
+            onChanged: (UserOccupation? value) {
               setState(() {
                 _character = value;
+                if (value != null) {
+                  widget.characterSetter(value);
+                }
               });
             },
           ),
         ),
         ListTile(
           title: const Text('I am Teacher'),
-          leading: Radio<SingingCharacter>(
-            value: SingingCharacter.teacher,
+          leading: Radio<UserOccupation>(
+            value: UserOccupation.teacher,
             groupValue: _character,
-            onChanged: (SingingCharacter? value) {
+            onChanged: (UserOccupation? value) {
               setState(() {
                 _character = value;
+                if (value != null) {
+                  widget.characterSetter(value);
+                }
               });
             },
           ),
@@ -138,18 +146,22 @@ Future<bool> validateAndRegister(
     showAlertDialog(context, resFromApi["msg"]);
     return false;
   }
-  // img is hardcoded
-  String imgUrl = defaultImg;
+
+  String occupationString;
+  if (occupation == UserOccupation.teacher) {
+    occupationString = "Teacher";
+  } else {
+    occupationString = "Student";
+  }
 
   UserSignUp user = UserSignUp(
       name: name.text,
-      imageUrl: imgUrl,
+      imageUrl: defaultImg,
       email: email.text,
       password: password.text,
       phone: phone.text,
-      occupation: occupation);
+      occupation: occupationString);
   addUser(user);
-  print("EXITED");
   return true;
 }
 
@@ -158,7 +170,16 @@ class RegisterPassFieldState extends State<RegisterPassField> {
   TextEditingController _registerPasswordController = TextEditingController();
   TextEditingController _registerNameController = TextEditingController();
   TextEditingController _registerPhoneController = TextEditingController();
-  MyStatefulWidget radioButton = MyStatefulWidget();
+  UserOccupation occupation = UserOccupation.student;
+  MyStatefulWidget radioButton = MyStatefulWidget(characterSetter: (value) {});
+
+  @override
+  void initState() {
+    super.initState();
+    radioButton = MyStatefulWidget(
+      characterSetter: (value) => occupation = value,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +214,7 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                           context,
                           // TODO: get response from radio button
                           // now it is hardcoded
-                          "Student",
+                          occupation,
                           _registerNameController,
                           _registerEmailController,
                           _registerPhoneController,
