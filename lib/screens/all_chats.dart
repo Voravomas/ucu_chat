@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/models/message_model.dart';
 import 'package:ucuchat/screens/chat.dart';
-import 'package:ucuchat/utils.dart';
 
 class AllChats extends StatelessWidget {
   @override
