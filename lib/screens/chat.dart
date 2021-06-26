@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/models/message_model.dart';
 import 'package:ucuchat/models/user_model.dart';

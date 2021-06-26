@@ -7,7 +7,6 @@ import 'package:ucuchat/screens/signin.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/validation.dart';
 import 'package:ucuchat/models/user_model.dart';
-import 'dart:math';
 
 Container getTopText(text) {
   return Container(

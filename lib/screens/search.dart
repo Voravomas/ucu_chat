@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/models/user_model.dart';
 
+import '../constants.dart';
+
 class SearchUsers extends StatefulWidget {
   @override
   _SearchUsersState createState() => _SearchUsersState();
@@ -56,15 +58,7 @@ class _SearchUsersState extends State<SearchUsers> {
     _searchController.addListener(_onSearchChanged);
   }
 
-  // @override
-  // void dispose() {
-  //   _searchController.removeListener(_onSearchChanged);
-  //   _searchController.dispose();
-  //   super.dispose();
-  // }
-
   _onSearchChanged() {
-    print(_searchController.text);
     readUsers();
   }
 
@@ -73,10 +67,65 @@ class _SearchUsersState extends State<SearchUsers> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Column(
-            children: [
-              Text(user.name),
-            ],
+          Container(
+            margin: EdgeInsets.only(top: 2.5, bottom: 2.5, right: 5.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            decoration: BoxDecoration(
+              color: Color(0xffebe9e6),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20.0),
+                bottomRight: Radius.circular(20.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 35.0,
+                      // Change to real one from db
+                      backgroundImage: AssetImage('assets/images/greg.jpg'),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user.name,
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          child: Text(
+                            '${user.occupation}, ${user.phone}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    IconButton(onPressed: () {}, icon: Icon(Icons.message))
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -94,16 +143,6 @@ class _SearchUsersState extends State<SearchUsers> {
               prefixIcon: Icon(Icons.search),
             ),
           ),
-          // Padding(
-          //   padding:
-          //       const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30.0),
-          //   child: TextField(
-          //     controller: _searchController,
-          //     decoration: InputDecoration(
-          //       prefixIcon: Icon(Icons.search),
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: ListView.builder(
                 itemCount: _resultUsers.length,
