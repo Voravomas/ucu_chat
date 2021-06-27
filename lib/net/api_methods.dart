@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ucuchat/models/user_model.dart';
 
 Future<bool> addUser(UserSignUp user) async {
@@ -6,7 +7,7 @@ Future<bool> addUser(UserSignUp user) async {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   print("Created users");
   try {
-    var value = await users.add({
+    var value = await users.doc(getCurrentUserId()).set({
       'name': user.name,
       'imgUrl': user.imageUrl,
       'email': user.email,
@@ -14,10 +15,21 @@ Future<bool> addUser(UserSignUp user) async {
       'phone': user.phone,
       'occupation': user.occupation
     });
+
     print("User Added: ${user.name}");
     return true;
   } catch (error) {
     print("Failed to add user ${user.name}: $error");
     return false;
   }
+}
+
+Future<DocumentSnapshot> getDataFromFirestore() async  {
+  DocumentSnapshot data =  await FirebaseFirestore.instance
+      .collection('users').doc(getCurrentUserId()).get();
+  return data;
+}
+
+String getCurrentUserId() {
+  return FirebaseAuth.instance.currentUser!.uid;
 }
