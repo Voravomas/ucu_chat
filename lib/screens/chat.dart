@@ -18,7 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            message.time,
+            '${message.sender.name}, ${message.time}',
             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
           ),
           SizedBox(
