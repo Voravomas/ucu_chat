@@ -142,19 +142,21 @@ class _UserPageState extends State<UserPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextButton(
-                onPressed: (){changeLoginAndPasswordPopUp(context);},
+                onPressed: (){ changeLoginAndPasswordPopUp(context); },
                 child: Row( children: [
-                  Text('Change Login and Password'),
+                  Text('Change Login & Password',
+                    style: TextStyle(color: primaryColor, fontSize: 15.0),),
                   SizedBox(width: 3.0,),
-                  Icon(Icons.vpn_key)
+                  Icon(Icons.vpn_key, color: primaryColor,)
                 ])
             ),
             TextButton(
-                onPressed: (){changeSettingsPopUp(context, userDataState);},
+                onPressed: (){ changeSettingsPopUp(context, userDataState); },
                 child: Row(children: [
-                  Text('Edit Profile'),
+                  Text('Edit Profile',
+                    style: TextStyle(color: primaryColor, fontSize: 15.0),),
                   SizedBox(width: 3.0,),
-                  Icon(Icons.settings)
+                  Icon(Icons.settings, color: primaryColor,)
                 ],)
             ),
           ],
@@ -165,9 +167,8 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Center( child: Column(
         children: [
-          // getTopText("User Page"),
           SizedBox(height: 30,),
           SizedBox(
             height: 200, width: 200,
@@ -176,17 +177,15 @@ class _UserPageState extends State<UserPage> {
               clipBehavior: Clip.none,
               children: [
                 Avatar(imgUrl: _imgUrl,),
-                Positioned(
-                  right: 0, bottom: 0,
-                  child: _editAvatarButton(),
-                ),
+                Positioned( right: 0, bottom: 0,
+                  child: _editAvatarButton(),),
               ],
             ),
           ),
           SizedBox(height: 20.0,),
           UserData(textFromDB: _textFromDB,),
         ],
-      ),
+      )),
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(0.0),
         child: _footerButtons(),
