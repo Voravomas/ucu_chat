@@ -66,8 +66,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _messageBuilder() {
-    print(currentUser.id == null ? "id is null" : "id is not null");
-    print(getCurrentUserId());
+    // print(currentUser.id == null ? "id is null" : "id is not null");
+    // print(getCurrentUserId());
     // FirebaseFirestore.instance
     //       .collection("messages")
     //       .where("sender", isEqualTo: currentUser.id)

@@ -145,12 +145,14 @@ Future<bool> validateAndRegister(
     showAlertDialog(context, resFromApi["msg"]);
     return false;
   }
-
+  var chatsList = [];
   String occupationString;
   if (occupation == UserOccupation.teacher) {
     occupationString = "Teacher";
+    chatsList = ['dUavh0PPDSG18Rn7tiw4', 'xJZleoII2ymX5pBbKcCr'];
   } else {
     occupationString = "Student";
+    chatsList = ['6w8QtNGtiRP6OBZWoljK', 'dUavh0PPDSG18Rn7tiw4'];
   }
 
   UserSignUp user = UserSignUp(
@@ -159,7 +161,8 @@ Future<bool> validateAndRegister(
       email: email.text,
       password: password.text,
       phone: phone.text,
-      occupation: occupationString);
+      occupation: occupationString,
+      chatsList: chatsList);
   addUser(user);
   return true;
 }

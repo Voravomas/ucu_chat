@@ -115,12 +115,12 @@ class _AllChatsState extends State<AllChats> {
     loadMessagesFromJson().then((value) => updateChats(value));
   }
   void updateChats(List<Message> msgs) {
-    print("updating" + (msgs.isEmpty ? "Empty" : "not empty"));
+    // print("updating" + (msgs.isEmpty ? "Empty" : "not empty"));
     setState(() {
       _chats.addAll(msgs);
-      print("adding " + msgs.length.toString() + " messages");
+      // print("adding " + msgs.length.toString() + " messages");
     });
-    print("updated");
+    // print("updated");
   }
 
   Widget buildChats() {
@@ -135,8 +135,8 @@ class _AllChatsState extends State<AllChats> {
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
-            print("gothere");
-            print(snapshot.data?.docs.length);
+            // print("gothere");
+            // print(snapshot.data?.docs.length);
             return chatListBuilder(snapshot);
           } else {
             return Center(
@@ -155,7 +155,7 @@ class _AllChatsState extends State<AllChats> {
       itemCount: doc.data?.docs.length,
       itemBuilder: (BuildContext context, int index) {
         DocumentSnapshot snap = doc.data?.docs[index] as DocumentSnapshot;
-        print(snap.exists);
+        // print(snap.exists);
         final User usr = User.fromDocument(snap) as User;
         return GestureDetector(
           onTap: () => Navigator.push(
