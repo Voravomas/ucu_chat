@@ -24,9 +24,24 @@ Future<bool> addUser(UserSignUp user) async {
   }
 }
 
-Future<DocumentSnapshot> getDataFromFirestore() async  {
-  DocumentSnapshot data =  await FirebaseFirestore.instance
-      .collection('users').doc(getCurrentUserId()).get();
+// bool haveMessages(String id1, id2) {
+//   final messages1 = FirebaseFirestore.instance
+//       .collection("messages")
+//       .where("sender", isEqualTo: id1)
+//       .where("receiver", isEqualTo: id2);
+//   final messages2 = FirebaseFirestore.instance
+//       .collection("messages")
+//       .where("sender", isEqualTo: id2)
+//       .where("receiver", isEqualTo: id1);
+
+//   final List<Object> msg_list = messages2.snapshots().toList();
+// }
+
+Future<DocumentSnapshot> getDataFromFirestore() async {
+  DocumentSnapshot data = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(getCurrentUserId())
+      .get();
   return data;
 }
 

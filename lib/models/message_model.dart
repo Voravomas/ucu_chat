@@ -1,20 +1,54 @@
-import 'package:ucuchat/models/user_model.dart';
+// import 'dart:html';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:ucuchat/models/user_model.dart';
+import 'serializer.dart';
+part 'message_model.g.dart';
+
+@immutable
+@JsonSerializable()
 class Message {
-  final User sender;
+  final String sender;
   final String
       time; // Would usually be type DateTime or Firebase Timestamp in production apps
   final String text;
   final bool isLiked;
   final bool unread;
+  final String receiver;
 
   Message({
     required this.sender,
+    required this.receiver,
     required this.time,
     required this.text,
     required this.isLiked,
     required this.unread,
   });
+
+  @override
+  bool operator ==(other) =>
+      other is Message &&
+      other.sender == sender &&
+      other.time == time &&
+      other.text == text;
+
+  @override
+  int get hashCode => hashValues(sender, time);
+
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MessageToJson(this);
+
+  factory Message.fromDocument(DocumentSnapshot doc) {
+    final map = doc.data() as Map<String, dynamic>;
+    // print(map);
+    map["id"] = doc.id;
+
+    return Message.fromJson(map as Map<String, dynamic>);
+  }
 }
 
 // YOU - current user
@@ -89,100 +123,105 @@ final User steven = User(
 List<User> favorites = [sam, steven, olivia, john, greg];
 
 // EXAMPLE CHATS ON HOME SCREEN
-List<Message> chats = [
-  Message(
-    sender: james,
-    time: '5:30 PM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: false,
-    unread: true,
-  ),
-  Message(
-    sender: olivia,
-    time: '4:30 PM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: false,
-    unread: true,
-  ),
-  Message(
-    sender: john,
-    time: '3:30 PM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: false,
-    unread: false,
-  ),
-  Message(
-    sender: sophia,
-    time: '2:30 PM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: false,
-    unread: true,
-  ),
-  Message(
-    sender: steven,
-    time: '1:30 PM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: false,
-    unread: false,
-  ),
-  Message(
-    sender: sam,
-    time: '12:30 PM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: false,
-    unread: false,
-  ),
-  Message(
-    sender: greg,
-    time: '11:30 AM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: false,
-    unread: false,
-  ),
-];
+// List<Message> chats = [
+//   Message(
+//     sender: james,
+//     time: '5:30 PM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: false,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: olivia,
+//     time: '4:30 PM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: false,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: john,
+//     time: '3:30 PM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: false,
+//     unread: false,
+//   ),
+//   Message(
+//     sender: sophia,
+//     time: '2:30 PM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: false,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: steven,
+//     time: '1:30 PM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: false,
+//     unread: false,
+//   ),
+//   Message(
+//     sender: sam,
+//     time: '12:30 PM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: false,
+//     unread: false,
+//   ),
+//   Message(
+//     sender: greg,
+//     time: '11:30 AM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: false,
+//     unread: false,
+//   ),
+// ];
 
-// EXAMPLE MESSAGES IN CHAT SCREEN
-List<Message> messages = [
-  Message(
-    sender: james,
-    time: '5:30 PM',
-    text: 'Hey, how\'s it going? What did you do today?',
-    isLiked: true,
-    unread: true,
-  ),
-  Message(
-    sender: currentUser,
-    time: '4:30 PM',
-    text: 'Just walked my doge. She was super duper cute. The best pupper!!',
-    isLiked: false,
-    unread: true,
-  ),
-  Message(
-    sender: james,
-    time: '3:45 PM',
-    text: 'How\'s the doggo?',
-    isLiked: false,
-    unread: true,
-  ),
-  Message(
-    sender: james,
-    time: '3:15 PM',
-    text: 'All the food',
-    isLiked: true,
-    unread: true,
-  ),
-  Message(
-    sender: currentUser,
-    time: '2:30 PM',
-    text: 'Nice! What kind of food did you eat?',
-    isLiked: false,
-    unread: true,
-  ),
-  Message(
-    sender: james,
-    time: '2:00 PM',
-    text: 'I ate so much food today.',
-    isLiked: false,
-    unread: true,
-  ),
-];
+// // EXAMPLE MESSAGES IN CHAT SCREEN
+// List<Message> messages = [
+//   Message(
+//     sender: james,
+//     time: '5:30 PM',
+//     text: 'Hey, how\'s it going? What did you do today?',
+//     isLiked: true,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: currentUser,
+//     time: '4:30 PM',
+//     text: 'Just walked my doge. She was super duper cute. The best pupper!!',
+//     isLiked: false,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: james,
+//     time: '3:45 PM',
+//     text: 'How\'s the doggo?',
+//     isLiked: false,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: james,
+//     time: '3:15 PM',
+//     text: 'All the food',
+//     isLiked: true,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: currentUser,
+//     time: '2:30 PM',
+//     text: 'Nice! What kind of food did you eat?',
+//     isLiked: false,
+//     unread: true,
+//   ),
+//   Message(
+//     sender: james,
+//     time: '2:00 PM',
+//     text: 'I ate so much food today.',
+//     isLiked: false,
+//     unread: true,
+//   ),
+// ];
+
+void dumpUsersTofile() {
+  final userList = <User>[greg, james, olivia];
+  writeUsersToJson(userList);
+}

@@ -1,5 +1,17 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+part 'user_model.g.dart';
+
+@immutable
+@JsonSerializable()
 class User {
+  // @JsonKey()
   final String id;
+
   final String name;
   final String imageUrl;
   final String occupation;
@@ -12,6 +24,25 @@ class User {
       required this.occupation,
       required this.email,
       required this.phone});
+
+  @override
+  bool operator ==(other) =>
+      other is User && other.id == id && other.name == name;
+
+  @override
+  int get hashCode => hashValues(id, name);
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  factory User.fromDocument(DocumentSnapshot doc) {
+    final map = doc.data() as Map<String, dynamic>;
+    // print(map);
+    map["id"] = doc.id;
+
+    return User.fromJson(map as Map<String, dynamic>);
+  }
 }
 
 class UserSignUp {
