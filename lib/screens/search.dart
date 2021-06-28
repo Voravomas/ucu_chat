@@ -1,12 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/models/user_model.dart';
+import 'package:ucuchat/screens/user.dart';
 
 import '../constants.dart';
 
 class SearchUsers extends StatefulWidget {
   @override
   _SearchUsersState createState() => _SearchUsersState();
+}
+
+CircleAvatar getAvatar(imgUrl) {
+  if (imgUrl == null) {
+    return CircleAvatar(backgroundImage: AssetImage(default_user_logo));
+  }
+  return CircleAvatar(backgroundImage: NetworkImage(imgUrl!));
 }
 
 class _SearchUsersState extends State<SearchUsers> {
@@ -94,12 +102,7 @@ class _SearchUsersState extends State<SearchUsers> {
                       children: [
                         Row(
                           children: <Widget>[
-                            CircleAvatar(
-                              radius: 35.0,
-                              // Change to real one from db
-                              backgroundImage:
-                                  AssetImage('assets/images/greg.jpg'),
-                            ),
+                            getAvatar(_resultUsers[index].imageUrl),
                             SizedBox(
                               width: 10.0,
                             ),
