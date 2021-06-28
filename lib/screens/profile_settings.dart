@@ -6,6 +6,7 @@ import 'package:ucuchat/net/api_methods.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/validation.dart';
 
+
 TextFormField getInputText(label, icon, controller) {
   return TextFormField(
       controller: controller,
@@ -34,7 +35,7 @@ changeSettingsPopUp(context, Function refresh) async {
               child: Column(
                 children: <Widget> [
                   getInputText('Name', Icon(Icons.account_box), _updateNameController),
-                  getInputText('Email', Icon(Icons.email), _updateEmailController),
+                  getInputText("Email (this doesn't change login)", Icon(Icons.email), _updateEmailController),
                   getInputText('Phone', Icon(Icons.phone), _updatePhoneController),
                 ],
               ),
@@ -60,16 +61,11 @@ changeSettingsPopUp(context, Function refresh) async {
                       onPressed: () async {
                         bool shouldNavigate = await validateAndUpdateDB(
                             context,
+                            refresh,
                             _updateNameController,
                             _updateEmailController,
                             _updatePhoneController);
-                        updateUserData(refresh,
-                            _updateNameController.text,
-                            _updateEmailController.text,
-                            _updatePhoneController.text);
-                        if (shouldNavigate) {
-                          Navigator.pop(context);
-                        }
+                        if (shouldNavigate) { Navigator.pop(context); }
                       }
                   ),
                 )
@@ -78,7 +74,7 @@ changeSettingsPopUp(context, Function refresh) async {
       });
 }
 
-Future<bool> validateAndUpdateDB(context, name, email, phone) async {
+Future<bool> validateAndUpdateDB(context, Function refresh, name, email, phone) async {
   if (validateName(name.text) == false) {
     showAlertDialog(context, "You have entered invalid name");
     name.clear();
@@ -94,9 +90,8 @@ Future<bool> validateAndUpdateDB(context, name, email, phone) async {
     phone.clear();
     return false;
   }
-
   // udate data in firestore
-  // updateUserData(name.text, email.text, phone.text, refresh);
+  updateUserData(refresh, name.text, email.text, phone.text);
   return true;
 }
 
@@ -118,11 +113,10 @@ Future<bool> updateUserData(Function refresh, name, email, phone) async {
 // change password and login
 
 changeLoginAndPasswordPopUp(context) async {
-  DocumentSnapshot data = await getDataFromFirestore();
-  TextEditingController _updateLoginController = TextEditingController(text: data['email']);
+  String? currentLogin = FirebaseAuth.instance.currentUser!.email;
+  TextEditingController _updateLoginController = TextEditingController(text: currentLogin);
   TextEditingController _updatePasswordController = TextEditingController();
   TextEditingController _repeatPasswordController = TextEditingController();
-
 
   showDialog(
       context: context,
@@ -135,9 +129,15 @@ changeLoginAndPasswordPopUp(context) async {
             child: Form(
               child: Column(
                 children: <Widget> [
-                  getInputText('Login', Icon(Icons.account_box), _updateLoginController),
-                  getInputText('Enter New Password', Icon(Icons.vpn_key_outlined), _updatePasswordController),
-                  getInputText('Repeat New Password', Icon(Icons.vpn_key_outlined), _repeatPasswordController),
+                  getInputText('Login',
+                      Icon(Icons.account_box),
+                      _updateLoginController),
+                  getInputText('Enter New Password',
+                      Icon(Icons.vpn_key_outlined),
+                      _updatePasswordController),
+                  getInputText('Repeat New Password',
+                      Icon(Icons.vpn_key_outlined),
+                      _repeatPasswordController),
                 ],
               ),
             ),
@@ -175,10 +175,14 @@ changeLoginAndPasswordPopUp(context) async {
       });
 }
 
-Future<bool> validateLoginAndPassword(context, login, newPassword, repeatedPassword) async {
-  if(newPassword != repeatedPassword) {
+Future<bool> validateLoginAndPassword(
+    context, login, newPassword, repeatedPassword) async {
+  if(newPassword.text != repeatedPassword.text) {
     showAlertDialog(context, "You didn't repeat password correct. "
-        "Please try one more time.");
+        "Please, try one more time.");
+    newPassword.clear();
+    repeatedPassword.clear();
+    return false;
   }
   if (validateEmail(login.text) == false) {
     showAlertDialog(context, "You have entered invalid email");
@@ -190,25 +194,44 @@ Future<bool> validateLoginAndPassword(context, login, newPassword, repeatedPassw
     newPassword.clear();
     return false;
   }
-  changeLoginAndPassword(context, newPassword.text, login.text);
+
+  bool? res = await changeLoginAndPassword(context, newPassword.text, login.text);
+  if (!res) {return false;}
   return true;
 }
 
-void changeLoginAndPassword(context, String newPassword, String login) async {
+Future<bool> changeLoginAndPassword(context, String newPassword, String login) async {
   User? user = FirebaseAuth.instance.currentUser;
 
   user!.updatePassword(newPassword).then((_){
     print("Successfully changed password");
+    user.updateEmail(login).then((_){
+      print("Successfully changed login");
+      successAlert(context);
+      return true;
+    });
   }).catchError((error){
     print("Password can't be changed" + error.toString());
     showAlertDialog(context, "Password and Login wasn't changed. "
-        "Try to re-authenticate.");
+        "Try to re-authenticate and then change your login and password again.");
+    // return false;
   });
-  user.updateEmail(login).then((_){
-    print("Successfully changed login");
-  }).catchError((error){
-    print("Login can't be changed" + error.toString());
-    showAlertDialog(context, "Password and Login wasn't changed. "
-        "Try to re-authenticate.");
-  });
+  return false;
+}
+
+successAlert(context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Icon(Icons.check_circle_outline_rounded, color: Colors.green,),
+          content: Text("Your login and password was successfully updated"),
+          actions: [
+            TextButton(
+                onPressed: (){ Navigator.pop(context); },
+                child: Text("OK", style: TextStyle(color: Colors.green),))
+          ],
+        );
+      }
+  );
 }
