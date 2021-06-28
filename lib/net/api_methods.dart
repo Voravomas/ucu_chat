@@ -6,6 +6,7 @@ Future<bool> addUser(UserSignUp user) async {
   print("in Add user");
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   print("Created users");
+  print(user.chatsList);
   try {
     var value = await users.doc(getCurrentUserId()).set({
       'name': user.name,
@@ -13,7 +14,8 @@ Future<bool> addUser(UserSignUp user) async {
       'email': user.email,
       'password': user.password,
       'phone': user.phone,
-      'occupation': user.occupation
+      'occupation': user.occupation,
+      'chatsList': user.chatsList,
     });
 
     print("User Added: ${user.name}");

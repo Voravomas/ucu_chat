@@ -11,7 +11,6 @@ part 'user_model.g.dart';
 class User {
   // @JsonKey()
   final String id;
-
   final String name;
   final String imageUrl;
   final String occupation;
@@ -52,6 +51,7 @@ class UserSignUp {
   final String password;
   final String phone;
   final String occupation;
+  final List chatsList;
 
   UserSignUp({
     required this.name,
@@ -60,5 +60,6 @@ class UserSignUp {
     required this.password,
     required this.phone,
     required this.occupation,
+    required this.chatsList,
   });
 }
