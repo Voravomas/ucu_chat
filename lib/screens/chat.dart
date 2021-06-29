@@ -2,21 +2,54 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/models/message_model.dart';
+import 'package:ucuchat/net/api_methods.dart';
 
 class ChatScreen extends StatefulWidget {
   final String title;
-
-  ChatScreen({required this.title});
+  final String chatId;
+  ChatScreen({required this.title, required this.chatId});
   @override
-  _ChatScreenState createState() => _ChatScreenState(title: title);
+  _ChatScreenState createState() =>
+      _ChatScreenState(title: title, chatId: this.chatId);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  String _chatId = "";
-  late String title;
+  final String chatId;
+  final String title;
+
+  List<Message>? _messages;
   int _limit = 20;
-  _ChatScreenState({required this.title});
+  _ChatScreenState({required this.title, required this.chatId}) {
+    _messages = <Message>[];
+    FirebaseFirestore.instance
+        .collection("messages")
+        .doc(chatId)
+        .collection("messages")
+        .snapshots()
+        .listen((event) {
+      final docs = event.docs;
+      updateMessages(docs.map((e) => e.data()).toList());
+    });
+  }
+
+  void updateMessages(List<Map<String, dynamic>?> newMsgs) {
+    List<Message>? msgs = <Message>[];
+    newMsgs.forEach((element) {
+      if (element != null) {
+        msgs.add(Message.fromJson(element));
+        print("ADDING MESSAGE" + Message.fromJson(element).content);
+      }
+    });
+
+    setState(() {
+      _messages = msgs;
+    });
+  }
+
+  void _refresh() {}
+
   _buildMessage(Message message, bool isMe) {
+    print("Building Message" + message.content);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,11 +117,9 @@ class _ChatScreenState extends State<ChatScreen> {
           // listMessage.addAll(snapshot.data!.docs);
           return ListView.builder(
             padding: EdgeInsets.all(10.0),
-            itemBuilder: (context, index) => _buildMessage(
-                Message.fromDocument(
-                    snapshot.data?.docs[index] as DocumentSnapshot),
-                true),
-            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (context, index) =>
+                _buildMessage(_messages![index], true),
+            itemCount: _messages?.length,
             reverse: true,
             // controller: listScrollController,
           );
@@ -153,23 +184,19 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: <Widget>[
             Expanded(
-              // child: ListView.builder(
-              //   reverse: true,
-              //   padding: EdgeInsets.only(top: 15.0),
-              //   itemBuilder: (BuildContext context, int index) {
-              //     final Message message = Message(
-              //         sender: "sender",
-              //         receiver: "receiver",
-              //         time: "time",
-              //         text: "text",
-              //         isLiked: true,
-              //         unread: true);
-              //     final bool isMe = message.sender == currentUser.id;
-              //     return _buildMessage(message, isMe);
-              //   },
-              //   itemCount: 0,
-              // ),
-              child: _messageBuilder(),
+              // child: RefreshIndicator(onRefresh: updateMessages(newMsgs),
+              child: ListView.builder(
+                reverse: true,
+                padding: EdgeInsets.only(top: 15.0),
+                itemBuilder: (BuildContext context, int index) {
+                  final Message message = _messages![index];
+                  final bool isMe = message.senderId == getCurrentUserId();
+                  return _buildMessage(message, isMe);
+                },
+                itemCount: _messages?.length,
+              ),
+              // child: _messageBuilder(),
+              // )
             ),
             _buildMessageComposer(),
           ],

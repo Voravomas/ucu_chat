@@ -108,13 +108,12 @@ class _AllChatsState extends State<AllChats> {
             final Message lastMessage = chat["messages"] != null
                 ? chat['messages'][0] as Message
                 : Message(
-                    senderName: "senderName", time: "time", content: "content");
-            // print(_chats);
+                    senderName: "senderName",
+                    senderId: " ",
+                    time: "time",
+                    content: "content");
+
             print("CHAT" + chat.toString());
-            // snap.
-            // print(chat);
-            // final msgs = chat["messages"]? as List<Map<String, dynamic>>;
-            // print(msgs);
             if (chat.isEmpty)
               return CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
@@ -123,9 +122,8 @@ class _AllChatsState extends State<AllChats> {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ChatScreen(
-                      title: chat["chatName"],
-                    ),
+                    builder: (_) =>
+                        ChatScreen(title: chat["chatName"], chatId: chat["id"]),
                   )),
               child: Container(
                 margin: EdgeInsets.only(top: 2.5, bottom: 2.5, right: 5.0),

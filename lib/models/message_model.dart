@@ -9,12 +9,14 @@ part 'message_model.g.dart';
 @JsonSerializable()
 class Message {
   final String senderName;
+  final String senderId;
   final String
       time; // Would usually be type DateTime or Firebase Timestamp in production apps
   final String content;
 
   Message({
     required this.senderName,
+    required this.senderId,
     required this.time,
     required this.content,
   });
