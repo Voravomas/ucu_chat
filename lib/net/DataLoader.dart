@@ -1,5 +1,3 @@
-import '../models/message_model.dart';
-import '../models/user_model.dart';
 import '../screens/all_chats.dart';
 
 class DataLoader {

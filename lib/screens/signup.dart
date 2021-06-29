@@ -35,28 +35,6 @@ Container getGoSignIn(context) {
           ])));
 }
 
-// Container registerAndRedirect(context, login, password, text, url) {
-//   // add registration
-//   return Container(
-//       padding: EdgeInsets.only(top: 70.0),
-//       child: ConstrainedBox(
-//           constraints: BoxConstraints.tightFor(width: 250, height: 60),
-//           child: ElevatedButton(
-//               child: Text(text, style: AppTextStyles.robotoWhite18Bold),
-//               onPressed: () async {
-//                 bool shouldNavigate =
-//                     await register(, email, phone, password);
-//                 if (url == 'pop') {
-//                   Navigator.pop(context);
-//                 } else {
-//                   Navigator.pushNamed(context, url);
-//                 }
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 primary: primaryColor,
-//               ))));
-// }
-
 enum UserOccupation { student, teacher }
 
 /// This is the stateful widget that the main application instantiates.
@@ -217,8 +195,6 @@ class RegisterPassFieldState extends State<RegisterPassField> {
                     onPressed: () async {
                       bool shouldNavigate = await validateAndRegister(
                           context,
-                          // TODO: get response from radio button
-                          // now it is hardcoded
                           occupation,
                           _registerNameController,
                           _registerEmailController,
@@ -248,8 +224,6 @@ class SignUp extends StatelessWidget {
           children: [
             getTopText("Sign up"),
             RegisterPassField(),
-            // registerAndRedirect(
-            //     context, "aaa", "aaa", "Sign Up", "/selectChat"),
             getGoSignIn(context),
           ],
         ));

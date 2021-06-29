@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/models/message_model.dart';
-import 'package:ucuchat/models/user_model.dart';
-import 'package:ucuchat/net/api_methods.dart';
 
 class ChatScreen extends StatefulWidget {
   final String title;
