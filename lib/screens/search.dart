@@ -20,7 +20,6 @@ CircleAvatar getAvatar(imgUrl) {
 class _SearchUsersState extends State<SearchUsers> {
   List<User> _allUsers = [];
   List<User> _resultUsers = [];
-  List myChats = [];
   TextEditingController _searchController = TextEditingController();
 
   searchResultsList() {
@@ -89,10 +88,7 @@ class _SearchUsersState extends State<SearchUsers> {
             child: ListView.builder(
                 itemCount: _resultUsers.length,
                 itemBuilder: (BuildContext context, int index) {
-                  String userName = '';
                   if (_resultUsers[index].id == getCurrentUserId()) {
-                    myChats = _resultUsers[index].personalChats;
-                    userName = _resultUsers[index].name;
                     return SizedBox(height: 0);
                   }
                   return Container(
@@ -169,7 +165,7 @@ class _SearchUsersState extends State<SearchUsers> {
                                       _resultUsers[index].id,
                                       _currentUser.name,
                                       _resultUsers[index].name,
-                                      myChats);
+                                      _currentUser.personalChats);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
