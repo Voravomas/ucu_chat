@@ -23,7 +23,7 @@ CircleAvatar getAvatar(imgUrl) {
 class _SearchUsersState extends State<SearchUsers> {
   List<User> _allUsers = [];
   List<User> _resultUsers = [];
-  // List myChats = [];
+  List myChats = [];
   TextEditingController _searchController = TextEditingController();
 
   searchResultsList() {
@@ -57,8 +57,8 @@ class _SearchUsersState extends State<SearchUsers> {
               imageUrl: doc.data()['imgUrl'],
               phone: doc.data()['phone'],
               email: doc.data()['email'],
-              // personalChats: doc.data()['personalChats'],
-              // chatsList: doc.data()['chatsList'],
+              chatsList: doc.data()['chatsList'],
+              personalChats: doc.data()['personalChats'],
             ),
           )
           .toList();
@@ -93,8 +93,7 @@ class _SearchUsersState extends State<SearchUsers> {
                 itemCount: _resultUsers.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (_resultUsers[index].id == getCurrentUserId()) {
-                    // myChats = _resultUsers[index].personalChats;
-                    // print(myChats);
+                    myChats = _resultUsers[index].personalChats;
                     return SizedBox(height: 0);
                   }
                   return Container(

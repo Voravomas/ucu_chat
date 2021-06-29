@@ -112,7 +112,7 @@ class _AllChatsState extends State<AllChats> {
 
   int _limit = 20;
   _AllChatsState() {
-    loadMessagesFromJson().then((value) => updateChats(value));
+    // loadMessagesFromJson().then((value) => updateChats(value));
   }
   void updateChats(List<Message> msgs) {
     // print("updating" + (msgs.isEmpty ? "Empty" : "not empty"));

@@ -16,6 +16,8 @@ class User {
   final String occupation;
   final String email;
   final String phone;
+  final List<dynamic> chatsList;
+  final List<dynamic> personalChats;
   User({
     required this.id,
     required this.name,
@@ -23,6 +25,8 @@ class User {
     required this.occupation,
     required this.email,
     required this.phone,
+    required this.chatsList,
+    required this.personalChats,
   });
 
   @override
@@ -53,7 +57,7 @@ class UserSignUp {
   final String phone;
   final String occupation;
   final List chatsList;
-  final Map personalChats;
+  final List personalChats;
 
   UserSignUp({
     required this.name,
