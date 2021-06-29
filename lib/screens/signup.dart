@@ -146,7 +146,7 @@ Future<bool> validateAndRegister(
     return false;
   }
   var chatsList = [];
-  Map<String, String> personalChats = {};
+  List personalChats = [];
   String occupationString;
   if (occupation == UserOccupation.teacher) {
     occupationString = "Teacher";

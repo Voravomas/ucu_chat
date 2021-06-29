@@ -26,7 +26,8 @@ class _ChatScreenState extends State<ChatScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '${isMe ? currentUser.name : user.name}, ${message.time}',
+            message.time,
+            // '${isMe ? currentUser.name : user.name}, ${message.time}',
             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
           ),
           SizedBox(

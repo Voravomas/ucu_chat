@@ -14,7 +14,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
     imageUrl: json['imgUrl'] as String, //
     occupation: json['occupation'] as String, //
     email: json['email'] as String, //
-    phone: json['phone'] as String, //
+    phone: json['phone'] as String,
+    chatsList: new List<String>.from(json['chatsList']),
+    personalChats: json['personalChats'] as List<dynamic>, //
   );
 }
 
