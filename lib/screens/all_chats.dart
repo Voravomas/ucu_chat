@@ -66,11 +66,29 @@ class _AllChatsState extends State<AllChats> {
           .orderBy("time", descending: true)
           .get();
 
-      if (snapshotmsgs.docs.isNotEmpty &&
-          (_currentUser.personalChats.contains(mymap[i]["id"]) ||
-              _currentUser.chatsList.contains(mymap[i]["id"]))) {
-        mymap[i]["messages"] =
-            snapshotmsgs.docs.map((e) => Message.fromDocument(e)).toList();
+      final chatPersonalList =
+          _currentUser.personalChats.map((e) => e["chatId"]).toList();
+
+      print("PERSONAL CHATS ${chatPersonalList.toString()}");
+      print(mymap[i]["id"] == chatPersonalList[0] ? "EQUALS" : "NOT EQUALS");
+      print(chatPersonalList.contains(mymap[i]["id"])
+          ? "CONTAINS"
+          : "NOT CONTAINS");
+      chatPersonalList.forEach((element) {
+        print("$element,  ${mymap[i]["id"]}  " + element == mymap[i]["id"]);
+      });
+      print("PERSONAL CONTAINS" + mymap[i]["id"]);
+      if ((chatPersonalList
+              // .map((e) => e.toString().toLowerCase())
+              .contains(mymap[i]["id"]) ||
+          _currentUser.chatsList.contains(mymap[i]["id"]))) {
+        if (snapshotmsgs.docs.isNotEmpty) {
+          mymap[i]["messages"] =
+              snapshotmsgs.docs.map((e) => Message.fromDocument(e)).toList();
+        } else {
+          mymap[i]["messages"] = [];
+        }
+
         // print("MESSAGE: " + (mymap[i]["messages"][0] as Message).content);
         chats.add(mymap[i]);
       } else {
@@ -123,13 +141,10 @@ class _AllChatsState extends State<AllChats> {
           itemCount: _chats.length,
           itemBuilder: (BuildContext context, int index) {
             final chat = _chats[index];
-            final Message lastMessage = chat["messages"] != null
+            final Message lastMessage = List.from(chat["messages"]).isNotEmpty
                 ? chat['messages'][0] as Message
                 : Message(
-                    senderName: "senderName",
-                    senderId: " ",
-                    time: "time",
-                    content: "content");
+                    senderName: " ", senderId: " ", time: "", content: "");
 
             print("CHAT" + chat.toString());
             if (chat.isEmpty)
