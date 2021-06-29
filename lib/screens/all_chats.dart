@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:ucuchat/constants.dart';
 import 'package:ucuchat/models/message_model.dart';
+import 'package:ucuchat/models/user_model.dart';
+import 'package:ucuchat/net/api_methods.dart';
 import 'package:ucuchat/screens/chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -35,6 +37,19 @@ class _AllChatsState extends State<AllChats> {
     var snapshot =
         await FirebaseFirestore.instance.collection("messages").get();
 
+    var curUsers = await FirebaseFirestore.instance.collection("users").get();
+
+    var smth = curUsers.docs;
+
+    final curUser = smth
+        .where((element) =>
+            User.fromDocument(element as DocumentSnapshot).id ==
+            getCurrentUserId())
+        .map((e) => User.fromDocument(e as DocumentSnapshot))
+        .toList()[0];
+
+    // print("CURRENT USER" + curUser[0].name);
+
     List<Map<String, dynamic>> chats = [];
     final List<Map<String, dynamic>> mymap = snapshot.docs
         .map((doc) => {"id": doc.id, "chatName": doc.data()["chatName"]})
@@ -50,7 +65,10 @@ class _AllChatsState extends State<AllChats> {
           .collection("messages")
           .orderBy("time", descending: true)
           .get();
-      if (snapshotmsgs.docs.isNotEmpty) {
+
+      if (snapshotmsgs.docs.isNotEmpty &&
+          (curUser.personalChats.contains(mymap[i]["id"]) ||
+              curUser.chatsList.contains(mymap[i]["id"]))) {
         mymap[i]["messages"] =
             snapshotmsgs.docs.map((e) => Message.fromDocument(e)).toList();
         // print("MESSAGE: " + (mymap[i]["messages"][0] as Message).content);

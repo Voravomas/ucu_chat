@@ -25,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
         .collection("messages")
         .doc(chatId)
         .collection("messages")
+        .orderBy("time", descending: true)
         .snapshots()
         .listen((event) {
       final docs = event.docs;
@@ -46,7 +47,19 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  void _refresh() {}
+  Future<void> _refresh() async {
+    final snaps = await FirebaseFirestore.instance
+        .collection("messages")
+        .doc(chatId)
+        .collection("messages")
+        .orderBy("time", descending: true)
+        .snapshots();
+
+    final newMessages = await snaps.map((element) => element.docs).toList();
+    newMessages.forEach((element) {
+      updateMessages(element.map((e) => e.data()).toList());
+    });
+  }
 
   _buildMessage(Message message, bool isMe) {
     print("Building Message" + message.content);
@@ -172,6 +185,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // _messages.sort();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -184,7 +198,6 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: <Widget>[
             Expanded(
-              // child: RefreshIndicator(onRefresh: updateMessages(newMsgs),
               child: ListView.builder(
                 reverse: true,
                 padding: EdgeInsets.only(top: 15.0),
@@ -196,7 +209,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemCount: _messages?.length,
               ),
               // child: _messageBuilder(),
-              // )
             ),
             _buildMessageComposer(),
           ],

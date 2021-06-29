@@ -17,9 +17,12 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
     senderName:
         (json["senderName"] != null ? json["senderName"] : "") as String,
     senderId: (json["senderId"] != null ? json["senderId"] : "") as String,
-    time: (time.hour == 0 ? "00" : time.hour.toString()) +
-        ":" +
-        (time.minute == 0 ? "00" : time.minute.toString()),
+    time:
+        (time.hour < 10 ? "0" + time.minute.toString() : time.hour.toString()) +
+            ":" +
+            (time.minute < 10
+                ? "0" + time.minute.toString()
+                : time.minute.toString()),
     content: (json['content'] == null ? "" : json['content']) as String,
   );
 }
