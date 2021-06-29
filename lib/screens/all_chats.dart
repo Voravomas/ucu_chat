@@ -159,167 +159,166 @@ class _AllChatsState extends State<AllChats> {
     }
 
     setState(() {
-      // print("setting chat");
-      // chats.removeAt(0);
       _chats = chats;
-      // print("SETTIN STATE");
-      // print(_chats);
     });
-    // chatsStream.forEach((element) {
-    //   print(element == null ? "is null" : 'not bull');
-    //   var el = element as Map<String, dynamic>;
-    //   print(el);
-    // });
-    // print("updated");
   }
 
   Widget buildChats() {
-    final instance = FirebaseFirestore.instance;
+    if (_chats.length == 1 && _chats[0].isEmpty) {
+      return Center(
+          child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+      ));
+    } else {
+      return Container(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection("messages").snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData) {
+              return chatListBuilder(snapshot);
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                ),
+              );
+            }
+          },
+        ),
+      );
+    }
+  }
 
-    return Container(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("messages")
-            // .doc()
-            // .collection(collectionPath)
-
-            // .limit(_limit)
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            // print("gothere");
-            // print(snapshot.data?.docs.length);
-            return chatListBuilder(snapshot);
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-              ),
-            );
-          }
-        },
-      ),
-    );
+  Future<void> _onRefresh() {
+    updateChats();
+    return Future(() => print(""));
   }
 
   Widget chatListBuilder(AsyncSnapshot<QuerySnapshot> doc) {
-    return ListView.builder(
-      itemCount: _chats.length,
-      itemBuilder: (BuildContext context, int index) {
-        final chat = _chats[index];
-        final Message lastMessage = chat["messages"][0] != null
-            ? chat['messages'][0] as Message
-            : Message(
-                senderName: "senderName", time: "time", content: "content");
-        // print(_chats);
-        print(chat);
-        // snap.
-        // print(chat);
-        // final msgs = chat["messages"]? as List<Map<String, dynamic>>;
-        // print(msgs);
-        return GestureDetector(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ChatScreen(
-                  title: chat["chatName"],
+    return RefreshIndicator(
+        onRefresh: () => _onRefresh(),
+        child: ListView.builder(
+          itemCount: _chats.length,
+          itemBuilder: (BuildContext context, int index) {
+            final chat = _chats[index];
+            final Message lastMessage = chat["messages"] != null
+                ? chat['messages'][0] as Message
+                : Message(
+                    senderName: "senderName", time: "time", content: "content");
+            // print(_chats);
+            print("CHAT" + chat.toString());
+            // snap.
+            // print(chat);
+            // final msgs = chat["messages"]? as List<Map<String, dynamic>>;
+            // print(msgs);
+            if (chat.isEmpty)
+              return CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+              );
+            return GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ChatScreen(
+                      title: chat["chatName"],
+                    ),
+                  )),
+              child: Container(
+                margin: EdgeInsets.only(top: 2.5, bottom: 2.5, right: 5.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  color: Color(0xffebe9e6),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
+                  ),
                 ),
-              )),
-          child: Container(
-            margin: EdgeInsets.only(top: 2.5, bottom: 2.5, right: 5.0),
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            decoration: BoxDecoration(
-              color: Color(0xffebe9e6),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: <Widget>[
-                    // CircleAvatar(
-                    //   radius: 35.0,
-                    //   backgroundImage: Image.network(usr.imageUrl,
-                    //       fit: BoxFit.cover,
-                    //       width: 50.0,
-                    //       height: 50.0, loadingBuilder: (BuildContext context,
-                    //           Widget child, ImageChunkEvent? loadingProgress) {
-                    //     if (loadingProgress == null) return child;
-                    //     return Container(
-                    //       width: 50,
-                    //       height: 50,
-                    //       child: Center(
-                    //         child: CircularProgressIndicator(
-                    //           color: primaryColor,
-                    //           value: loadingProgress.expectedTotalBytes !=
-                    //                       null &&
-                    //                   loadingProgress.expectedTotalBytes != null
-                    //               ? loadingProgress.cumulativeBytesLoaded /
-                    //                   loadingProgress.expectedTotalBytes!
-                    //               : null,
-                    //         ),
-                    //       ),
-                    //     );
-                    //   }, errorBuilder: (context, object, stackTrace) {
-                    //     return Icon(
-                    //       Icons.account_circle,
-                    //       size: 50.0,
-                    //       color: greyColor,
-                    //     );
-                    //   }).image,
-                    // ),
-                    SizedBox(
-                      width: 10.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: <Widget>[
+                        // CircleAvatar(
+                        //   radius: 35.0,
+                        //   backgroundImage: Image.network(usr.imageUrl,
+                        //       fit: BoxFit.cover,
+                        //       width: 50.0,
+                        //       height: 50.0, loadingBuilder: (BuildContext context,
+                        //           Widget child, ImageChunkEvent? loadingProgress) {
+                        //     if (loadingProgress == null) return child;
+                        //     return Container(
+                        //       width: 50,
+                        //       height: 50,
+                        //       child: Center(
+                        //         child: CircularProgressIndicator(
+                        //           color: primaryColor,
+                        //           value: loadingProgress.expectedTotalBytes !=
+                        //                       null &&
+                        //                   loadingProgress.expectedTotalBytes != null
+                        //               ? loadingProgress.cumulativeBytesLoaded /
+                        //                   loadingProgress.expectedTotalBytes!
+                        //               : null,
+                        //         ),
+                        //       ),
+                        //     );
+                        //   }, errorBuilder: (context, object, stackTrace) {
+                        //     return Icon(
+                        //       Icons.account_circle,
+                        //       size: 50.0,
+                        //       color: greyColor,
+                        //     );
+                        //   }).image,
+                        // ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              chat['chatName'],
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              child: Text(
+                                lastMessage.content,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  // fontSize: 13.0,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
                         Text(
-                          chat['chatName'],
+                          lastMessage.time,
                           style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.45,
-                          child: Text(
-                            lastMessage.content,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              // fontSize: 13.0,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
                       ],
-                    )
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      lastMessage.time,
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+              ),
+            );
+          },
+        ));
   }
 
   @override

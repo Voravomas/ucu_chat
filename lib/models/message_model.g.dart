@@ -20,7 +20,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
     time: (time.hour == 0 ? "00" : time.hour.toString()) +
         ":" +
         (time.minute == 0 ? "00" : time.minute.toString()),
-    content: (json['content'] == null ? "" : json['content']) as String,
+    content: (json['content'] != null ? json['content'] : " ") as String,
     // isLiked: json['isLiked'] as bool,
     // unread: json['unread'] as bool,
   );
