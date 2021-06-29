@@ -9,14 +9,15 @@ part of 'user_model.dart';
 User _$UserFromJson(Map<String, dynamic> json) {
   print(json["imageUrl"] == null);
   return User(
-      id: json['id'] as String, //
-      name: json['name'] as String, //
-      imageUrl: json['imgUrl'] as String, //
-      occupation: json['occupation'] as String, //
-      email: json['email'] as String, //
-      phone: json['phone'] as String, //
-      chatids: json["chatsList"] as List<String>,
-      personalChatIds: json["personalChats"] as List<Map<String, dynamic>>);
+    id: json['id'] as String, //
+    name: json['name'] as String, //
+    imageUrl: json['imgUrl'] as String, //
+    occupation: json['occupation'] as String, //
+    email: json['email'] as String, //
+    phone: json['phone'] as String,
+    chatsList: new List<String>.from(json['chatsList']),
+    personalChats: json['personalChats'] as List<dynamic>, //
+  );
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/models/user_model.dart';
@@ -21,6 +23,7 @@ CircleAvatar getAvatar(imgUrl) {
 class _SearchUsersState extends State<SearchUsers> {
   List<User> _allUsers = [];
   List<User> _resultUsers = [];
+  List myChats = [];
   TextEditingController _searchController = TextEditingController();
 
   searchResultsList() {
@@ -48,14 +51,15 @@ class _SearchUsersState extends State<SearchUsers> {
       _allUsers = snapshot.docs
           .map(
             (doc) => User(
-                id: doc.id,
-                name: doc.data()['name'],
-                occupation: doc.data()['occupation'],
-                imageUrl: doc.data()['imgUrl'],
-                phone: doc.data()['phone'],
-                email: doc.data()['email'],
-                personalChatIds: doc.data()['personalChats'],
-                chatids: doc.data()['chatList']),
+              id: doc.id,
+              name: doc.data()['name'],
+              occupation: doc.data()['occupation'],
+              imageUrl: doc.data()['imgUrl'],
+              phone: doc.data()['phone'],
+              email: doc.data()['email'],
+              chatsList: doc.data()['chatsList'],
+              personalChats: doc.data()['personalChats'],
+            ),
           )
           .toList();
     });
@@ -88,7 +92,10 @@ class _SearchUsersState extends State<SearchUsers> {
             child: ListView.builder(
                 itemCount: _resultUsers.length,
                 itemBuilder: (BuildContext context, int index) {
+                  String userName = '';
                   if (_resultUsers[index].id == getCurrentUserId()) {
+                    myChats = _resultUsers[index].personalChats;
+                    userName = _resultUsers[index].name;
                     return SizedBox(height: 0);
                   }
                   return Container(
@@ -144,7 +151,16 @@ class _SearchUsersState extends State<SearchUsers> {
                         Column(
                           children: <Widget>[
                             IconButton(
-                                onPressed: () {}, icon: Icon(Icons.message))
+                                onPressed: () {
+                                  addNewChat(
+                                      getCurrentUserId(),
+                                      _resultUsers[index].id,
+                                      userName,
+                                      _resultUsers[index].name,
+                                      myChats);
+                                  readUsers();
+                                },
+                                icon: Icon(Icons.message))
                           ],
                         ),
                       ],

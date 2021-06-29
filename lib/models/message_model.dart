@@ -58,6 +58,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   // chatsList: [],
+//   // personalChats: [],
 // );
 
 // // USERS
@@ -68,6 +70,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   chatsList: [],
+//   personalChats: [],
 // );
 // final User james = User(
 //   id: '2',
@@ -76,6 +80,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   chatsList: [],
+//   personalChats: [],
 // );
 // final User john = User(
 //   id: '3',
@@ -84,6 +90,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   chatsList: [],
+//   personalChats: [],
 // );
 // final User olivia = User(
 //   id: '4',
@@ -92,6 +100,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   chatsList: [],
+//   personalChats: [],
 // );
 // final User sam = User(
 //   id: '5',
@@ -100,6 +110,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   // chatsList: [],
+//   // personalChats: [],
 // );
 // final User sophia = User(
 //   id: '6',
@@ -108,6 +120,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   // chatsList: [],
+//   // personalChats: [],
 // );
 // final User steven = User(
 //   id: '7',
@@ -116,6 +130,8 @@ class Message {
 //   occupation: 'Student',
 //   email: 'test@gmail.com',
 //   phone: '0671111111',
+//   // chatsList: [],
+//   // personalChats: [],
 // );
 
 // // FAVORITE CONTACTS

@@ -16,17 +16,18 @@ class User {
   final String occupation;
   final String email;
   final String phone;
-  final List<String> chatids;
-  final List<Map<String, dynamic>> personalChatIds;
-  User(
-      {required this.id,
-      required this.name,
-      required this.imageUrl,
-      required this.occupation,
-      required this.email,
-      required this.phone,
-      required this.chatids,
-      required this.personalChatIds});
+  final List<dynamic> chatsList;
+  final List<dynamic> personalChats;
+  User({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.occupation,
+    required this.email,
+    required this.phone,
+    required this.chatsList,
+    required this.personalChats,
+  });
 
   @override
   bool operator ==(other) =>
@@ -56,7 +57,7 @@ class UserSignUp {
   final String phone;
   final String occupation;
   final List chatsList;
-  final Map personalChats;
+  final List personalChats;
 
   UserSignUp({
     required this.name,
