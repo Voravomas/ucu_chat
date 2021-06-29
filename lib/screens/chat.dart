@@ -148,6 +148,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _buildMessageComposer() {
+    final myController = TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       height: 70.0,
@@ -161,6 +162,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           Expanded(
             child: TextField(
+              controller: myController,
               textCapitalization: TextCapitalization.sentences,
               onChanged: (value) {},
               decoration: InputDecoration.collapsed(
@@ -169,7 +171,12 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (myController.value.text != '') {
+                addMessage(
+                    chatId, myController.value.text, '', getCurrentUserId());
+              }
+            },
             icon: Icon(Icons.send),
             color: primaryColor,
           ),
