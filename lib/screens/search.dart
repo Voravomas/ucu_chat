@@ -92,8 +92,10 @@ class _SearchUsersState extends State<SearchUsers> {
             child: ListView.builder(
                 itemCount: _resultUsers.length,
                 itemBuilder: (BuildContext context, int index) {
+                  String userName = '';
                   if (_resultUsers[index].id == getCurrentUserId()) {
                     myChats = _resultUsers[index].personalChats;
+                    userName = _resultUsers[index].name;
                     return SizedBox(height: 0);
                   }
                   return Container(
@@ -149,7 +151,16 @@ class _SearchUsersState extends State<SearchUsers> {
                         Column(
                           children: <Widget>[
                             IconButton(
-                                onPressed: () {}, icon: Icon(Icons.message))
+                                onPressed: () {
+                                  addNewChat(
+                                      getCurrentUserId(),
+                                      _resultUsers[index].id,
+                                      userName,
+                                      _resultUsers[index].name,
+                                      myChats);
+                                  readUsers();
+                                },
+                                icon: Icon(Icons.message))
                           ],
                         ),
                       ],
