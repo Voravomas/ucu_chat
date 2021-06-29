@@ -167,8 +167,19 @@ class _AllChatsState extends State<AllChats> {
                       children: <Widget>[
                         CircleAvatar(
                           radius: 35.0,
-                          backgroundImage:
-                              AssetImage('assets/images/ucu_logo.png'),
+                          backgroundColor: Colors.white,
+                          child: ['УКУ студенти', 'УКУ всі', 'УКУ викладачі']
+                                  .contains(chat['chatName'])
+                              ? Icon(
+                                  Icons.people,
+                                  color: primaryColor,
+                                  size: 40,
+                                )
+                              : Icon(
+                                  Icons.person,
+                                  color: primaryColor,
+                                  size: 40,
+                                ),
                         ),
                         SizedBox(
                           width: 10.0,
