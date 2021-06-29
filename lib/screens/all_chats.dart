@@ -39,9 +39,9 @@ class _AllChatsState extends State<AllChats> {
 
     var curUsers = await FirebaseFirestore.instance.collection("users").get();
 
-    var smth = curUsers.docs;
+    // var smth = ;
 
-    _currentUser = smth
+    _currentUser = curUsers.docs
         .where((element) =>
             User.fromDocument(element as DocumentSnapshot).id ==
             getCurrentUserId())
@@ -69,18 +69,8 @@ class _AllChatsState extends State<AllChats> {
       final chatPersonalList =
           _currentUser.personalChats.map((e) => e["chatId"]).toList();
 
-      print("PERSONAL CHATS ${chatPersonalList.toString()}");
-      print(mymap[i]["id"] == chatPersonalList[0] ? "EQUALS" : "NOT EQUALS");
-      print(chatPersonalList.contains(mymap[i]["id"])
-          ? "CONTAINS"
-          : "NOT CONTAINS");
-      chatPersonalList.forEach((element) {
-        print("$element,  ${mymap[i]["id"]}  " + element == mymap[i]["id"]);
-      });
-      print("PERSONAL CONTAINS" + mymap[i]["id"]);
-      if ((chatPersonalList
-              // .map((e) => e.toString().toLowerCase())
-              .contains(mymap[i]["id"]) ||
+      // getCurrentUserId();
+      if ((chatPersonalList.contains(mymap[i]["id"]) ||
           _currentUser.chatsList.contains(mymap[i]["id"]))) {
         if (snapshotmsgs.docs.isNotEmpty) {
           mymap[i]["messages"] =
