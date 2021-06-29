@@ -86,4 +86,15 @@ addNewChat(String creatorID, String receiverID, String creatorName,
   }
 }
 
-addMessage(String chatId, String content, String userName) {}
+addMessage(String chatId, String content, String userName, String userId) {
+  FirebaseFirestore.instance
+      .collection('messages')
+      .doc(chatId)
+      .collection('messages')
+      .add({
+    'content': content,
+    'senderName': userName,
+    'senderId': userId,
+    'time': FieldValue.serverTimestamp()
+  });
+}
