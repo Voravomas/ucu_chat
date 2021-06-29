@@ -71,7 +71,6 @@ Future<String> addNewChat(String creatorID, String receiverID,
     }
   }
   if (exists) {
-    print('chat exists');
     return existingId;
   } else {
     final String chatName = '$creatorName and $receiverName';
@@ -81,7 +80,6 @@ Future<String> addNewChat(String creatorID, String receiverID,
     });
     addChatToUsers(creatorID, receiverID, ref.id);
     // Creating full path for message, maybe need to delete this
-    print(ref.id);
     FirebaseFirestore.instance
         .collection('messages')
         .doc(ref.id)
