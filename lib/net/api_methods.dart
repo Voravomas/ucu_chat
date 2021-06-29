@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:ucuchat/models/user_model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -22,8 +23,8 @@ Future<bool> addUser(UserSignUp user) async {
 
     print("User Added: ${user.name}");
     // Just for debug
-    addNewChat(getCurrentUserId(), "8f0MzWxhUjM9bo5yqrPFI5j6LWO2", user.name,
-        'Serj Miskiv');
+    // addNewChat(getCurrentUserId(), "8f0MzWxhUjM9bo5yqrPFI5j6LWO2", user.name,
+    //     'Serj Miskiv', []);
     return true;
   } catch (error) {
     print("Failed to add user ${user.name}: $error");
@@ -75,19 +76,29 @@ addChatToUsers(String yourId, String notYourId, String chatId) {
 }
 
 addNewChat(String creatorID, String receiverID, String creatorName,
-    String receiverName) async {
-  final String chatName = '$creatorName - $receiverName';
-  DocumentReference ref =
-      await FirebaseFirestore.instance.collection('messages').add({
-    'chatName': chatName,
-  });
-  addChatToUsers(creatorID, receiverID, ref.id);
-  // Creating full path for message, maybe need to delete this
-  FirebaseFirestore.instance
-      .collection('messages')
-      .doc(ref.id)
-      .collection('messages')
-      .add({});
+    String receiverName, List allChats) async {
+  bool exists = false;
+  for (var chat in allChats) {
+    if (chat['userId'] == receiverID) {
+      exists = true;
+    }
+  }
+  if (exists) {
+    print('chat exists');
+  } else {
+    final String chatName = '$creatorName and $receiverName';
+    DocumentReference ref =
+        await FirebaseFirestore.instance.collection('messages').add({
+      'chatName': chatName,
+    });
+    addChatToUsers(creatorID, receiverID, ref.id);
+    // Creating full path for message, maybe need to delete this
+    FirebaseFirestore.instance
+        .collection('messages')
+        .doc(ref.id)
+        .collection('messages')
+        .add({});
+  }
 }
 
 addMessage(String chatId, String content, String userName) {}
