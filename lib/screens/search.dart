@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ucuchat/models/user_model.dart';
 import 'package:ucuchat/net/api_methods.dart';
 import '../constants.dart';
+import 'chat.dart';
 
 class SearchUsers extends StatefulWidget {
   @override
@@ -148,12 +149,25 @@ class _SearchUsersState extends State<SearchUsers> {
                           children: <Widget>[
                             IconButton(
                                 onPressed: () {
+                                  String chatId = '';
+
                                   addNewChat(
-                                      getCurrentUserId(),
-                                      _resultUsers[index].id,
-                                      userName,
-                                      _resultUsers[index].name,
-                                      myChats);
+                                          getCurrentUserId(),
+                                          _resultUsers[index].id,
+                                          userName,
+                                          _resultUsers[index].name,
+                                          myChats)
+                                      .then((String result) {
+                                    setState(() {
+                                      chatId = result;
+                                    });
+                                  });
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => ChatScreen(
+                                            title: 'Chat', chatId: chatId),
+                                      ));
                                   readUsers();
                                 },
                                 icon: Icon(Icons.message))
