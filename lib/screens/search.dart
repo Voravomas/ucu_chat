@@ -148,25 +148,36 @@ class _SearchUsersState extends State<SearchUsers> {
                         Column(
                           children: <Widget>[
                             IconButton(
-                                onPressed: () {
-                                  String chatId = '';
-
-                                  addNewChat(
-                                          getCurrentUserId(),
-                                          _resultUsers[index].id,
-                                          userName,
-                                          _resultUsers[index].name,
-                                          myChats)
-                                      .then((String result) {
-                                    setState(() {
-                                      chatId = result;
-                                    });
-                                  });
+                                onPressed: () async {
+                                  late User _currentUser;
+                                  var curUsers = await FirebaseFirestore
+                                      .instance
+                                      .collection("users")
+                                      .get();
+                                  var smth = curUsers.docs;
+                                  _currentUser = smth
+                                      .where((element) =>
+                                          User.fromDocument(
+                                                  element as DocumentSnapshot)
+                                              .id ==
+                                          getCurrentUserId())
+                                      .map((e) => User.fromDocument(
+                                          e as DocumentSnapshot))
+                                      .toList()[0];
+                                  final chatId = await addNewChat(
+                                      getCurrentUserId(),
+                                      _resultUsers[index].id,
+                                      _currentUser.name,
+                                      _resultUsers[index].name,
+                                      myChats);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) => ChatScreen(
-                                            title: 'Chat', chatId: chatId),
+                                          title: _resultUsers[index].name,
+                                          chatId: chatId,
+                                          userName: _currentUser.name,
+                                        ),
                                       ));
                                   readUsers();
                                 },

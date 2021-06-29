@@ -25,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
   _ChatScreenState(
       {required this.title, required this.chatId, required this.userName}) {
     _messages = <Message>[];
+    print('Chat id: $chatId');
     FirebaseFirestore.instance
         .collection("messages")
         .doc(chatId)
