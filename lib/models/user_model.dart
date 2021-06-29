@@ -52,6 +52,7 @@ class UserSignUp {
   final String phone;
   final String occupation;
   final List chatsList;
+  final Map personalChats;
 
   UserSignUp({
     required this.name,
@@ -61,5 +62,6 @@ class UserSignUp {
     required this.phone,
     required this.occupation,
     required this.chatsList,
+    required this.personalChats,
   });
 }

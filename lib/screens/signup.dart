@@ -146,6 +146,7 @@ Future<bool> validateAndRegister(
     return false;
   }
   var chatsList = [];
+  Map<String, String> personalChats = {};
   String occupationString;
   if (occupation == UserOccupation.teacher) {
     occupationString = "Teacher";
@@ -156,13 +157,15 @@ Future<bool> validateAndRegister(
   }
 
   UserSignUp user = UserSignUp(
-      name: name.text,
-      imageUrl: defaultImg,
-      email: email.text,
-      password: password.text,
-      phone: phone.text,
-      occupation: occupationString,
-      chatsList: chatsList);
+    name: name.text,
+    imageUrl: defaultImg,
+    email: email.text,
+    password: password.text,
+    phone: phone.text,
+    occupation: occupationString,
+    chatsList: chatsList,
+    personalChats: personalChats,
+  );
   addUser(user);
   return true;
 }

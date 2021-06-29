@@ -16,6 +16,7 @@ Future<bool> addUser(UserSignUp user) async {
       'phone': user.phone,
       'occupation': user.occupation,
       'chatsList': user.chatsList,
+      'personalChats': user.personalChats,
     });
 
     print("User Added: ${user.name}");
