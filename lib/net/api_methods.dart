@@ -71,8 +71,10 @@ Future<String> addNewChat(String creatorID, String receiverID,
     }
   }
   if (exists) {
+    print('chatExists');
     return existingId;
   } else {
+    print('chat no Exists');
     final String chatName = '$creatorName and $receiverName';
     DocumentReference ref =
         await FirebaseFirestore.instance.collection('messages').add({
