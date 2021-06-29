@@ -60,16 +60,19 @@ addChatToUsers(String yourId, String notYourId, String chatId) {
   );
 }
 
-addNewChat(String creatorID, String receiverID, String creatorName,
-    String receiverName, List allChats) async {
+Future<String> addNewChat(String creatorID, String receiverID,
+    String creatorName, String receiverName, List allChats) async {
   bool exists = false;
+  String existingId = '';
   for (var chat in allChats) {
     if (chat['userId'] == receiverID) {
       exists = true;
+      existingId = chat['chatId'];
     }
   }
   if (exists) {
     print('chat exists');
+    return existingId;
   } else {
     final String chatName = '$creatorName and $receiverName';
     DocumentReference ref =
@@ -78,11 +81,13 @@ addNewChat(String creatorID, String receiverID, String creatorName,
     });
     addChatToUsers(creatorID, receiverID, ref.id);
     // Creating full path for message, maybe need to delete this
+    print(ref.id);
     FirebaseFirestore.instance
         .collection('messages')
         .doc(ref.id)
         .collection('messages')
         .add({});
+    return ref.id;
   }
 }
 
