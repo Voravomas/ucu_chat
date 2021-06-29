@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ucuchat/utils.dart';
 import 'package:ucuchat/constants.dart';
 
-// TODO: set isLogedIn to context
-
 String getNextPath(isLogedIn) {
   if (isLogedIn == false) {
     return '/signIn';
@@ -23,7 +21,6 @@ Container getWelcomeText(text) {
 class GetStarted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // isLogedIn will prevent users from authenticating twice
     String nextPath = getNextPath(isLogedIn);
     return Scaffold(
         appBar: AppBar(
