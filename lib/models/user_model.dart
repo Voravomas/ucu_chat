@@ -16,13 +16,14 @@ class User {
   final String occupation;
   final String email;
   final String phone;
-  User(
-      {required this.id,
-      required this.name,
-      required this.imageUrl,
-      required this.occupation,
-      required this.email,
-      required this.phone});
+  User({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.occupation,
+    required this.email,
+    required this.phone,
+  });
 
   @override
   bool operator ==(other) =>

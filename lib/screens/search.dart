@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ucuchat/models/user_model.dart';
@@ -21,6 +23,7 @@ CircleAvatar getAvatar(imgUrl) {
 class _SearchUsersState extends State<SearchUsers> {
   List<User> _allUsers = [];
   List<User> _resultUsers = [];
+  // List myChats = [];
   TextEditingController _searchController = TextEditingController();
 
   searchResultsList() {
@@ -54,6 +57,8 @@ class _SearchUsersState extends State<SearchUsers> {
               imageUrl: doc.data()['imgUrl'],
               phone: doc.data()['phone'],
               email: doc.data()['email'],
+              // personalChats: doc.data()['personalChats'],
+              // chatsList: doc.data()['chatsList'],
             ),
           )
           .toList();
@@ -88,6 +93,8 @@ class _SearchUsersState extends State<SearchUsers> {
                 itemCount: _resultUsers.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (_resultUsers[index].id == getCurrentUserId()) {
+                    // myChats = _resultUsers[index].personalChats;
+                    // print(myChats);
                     return SizedBox(height: 0);
                   }
                   return Container(

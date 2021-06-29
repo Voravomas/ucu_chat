@@ -59,6 +59,8 @@ final User currentUser = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 
 // USERS
@@ -69,6 +71,8 @@ final User greg = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 final User james = User(
   id: '2',
@@ -77,6 +81,8 @@ final User james = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 final User john = User(
   id: '3',
@@ -85,6 +91,8 @@ final User john = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 final User olivia = User(
   id: '4',
@@ -93,6 +101,8 @@ final User olivia = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 final User sam = User(
   id: '5',
@@ -101,6 +111,8 @@ final User sam = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 final User sophia = User(
   id: '6',
@@ -109,6 +121,8 @@ final User sophia = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 final User steven = User(
   id: '7',
@@ -117,6 +131,8 @@ final User steven = User(
   occupation: 'Student',
   email: 'test@gmail.com',
   phone: '0671111111',
+  // chatsList: [],
+  // personalChats: [],
 );
 
 // FAVORITE CONTACTS
