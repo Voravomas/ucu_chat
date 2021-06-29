@@ -103,26 +103,6 @@ TextField getInputPage(text, controller, obscure) {
       ));
 }
 
-// Container authAndRedirect(context, login, password, text, url) {
-//   // add authentication
-//   return Container(
-//       padding: EdgeInsets.only(top: 70.0),
-//       child: ConstrainedBox(
-//           constraints: BoxConstraints.tightFor(width: 250, height: 60),
-//           child: ElevatedButton(
-//               child: Text(text, style: AppTextStyles.robotoWhite18Bold),
-//               onPressed: () {
-//                 if (url == 'pop') {
-//                   Navigator.pop(context);
-//                 } else {
-//                   Navigator.pushNamed(context, url);
-//                 }
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 primary: primaryColor,
-//               ))));
-// }
-
 Container getGoSignUp(context) {
   return Container(
       padding: EdgeInsets.only(top: 40.0),
@@ -143,8 +123,6 @@ Container getGoSignUp(context) {
 class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // redirects back to getStarted
-    // if user is already authenticated
     if (isLogedIn == true) {
       Navigator.pop(context);
     }
@@ -157,7 +135,6 @@ class SignIn extends StatelessWidget {
           children: [
             getTopText("Sign in"),
             LoginPassField(),
-            // authAndRedirect(context, "aaa", "aaa", "Sign In", "/selectChat"),
             getGoSignUp(context)
           ],
         ));
