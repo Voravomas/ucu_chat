@@ -14,7 +14,7 @@ class AllChats extends StatefulWidget {
 
 class _AllChatsState extends State<AllChats> {
   late List<Map<String, dynamic>> _chats = [{}];
-
+  late User _currentUser;
   int _limit = 20;
   _AllChatsState() {
     updateChats();
@@ -41,7 +41,7 @@ class _AllChatsState extends State<AllChats> {
 
     var smth = curUsers.docs;
 
-    final curUser = smth
+    _currentUser = smth
         .where((element) =>
             User.fromDocument(element as DocumentSnapshot).id ==
             getCurrentUserId())
@@ -67,8 +67,8 @@ class _AllChatsState extends State<AllChats> {
           .get();
 
       if (snapshotmsgs.docs.isNotEmpty &&
-          (curUser.personalChats.contains(mymap[i]["id"]) ||
-              curUser.chatsList.contains(mymap[i]["id"]))) {
+          (_currentUser.personalChats.contains(mymap[i]["id"]) ||
+              _currentUser.chatsList.contains(mymap[i]["id"]))) {
         mymap[i]["messages"] =
             snapshotmsgs.docs.map((e) => Message.fromDocument(e)).toList();
         // print("MESSAGE: " + (mymap[i]["messages"][0] as Message).content);
@@ -140,8 +140,10 @@ class _AllChatsState extends State<AllChats> {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) =>
-                        ChatScreen(title: chat["chatName"], chatId: chat["id"]),
+                    builder: (_) => ChatScreen(
+                        title: chat["chatName"],
+                        chatId: chat["id"],
+                        userName: _currentUser.name),
                   )),
               child: Container(
                 margin: EdgeInsets.only(top: 2.5, bottom: 2.5, right: 5.0),

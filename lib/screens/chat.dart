@@ -7,19 +7,23 @@ import 'package:ucuchat/net/api_methods.dart';
 class ChatScreen extends StatefulWidget {
   final String title;
   final String chatId;
-  ChatScreen({required this.title, required this.chatId});
+  final String userName;
+  ChatScreen(
+      {required this.title, required this.chatId, required this.userName});
   @override
-  _ChatScreenState createState() =>
-      _ChatScreenState(title: title, chatId: this.chatId);
+  _ChatScreenState createState() => _ChatScreenState(
+      title: title, chatId: this.chatId, userName: this.userName);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   final String chatId;
   final String title;
+  final String userName;
 
   List<Message>? _messages;
   int _limit = 20;
-  _ChatScreenState({required this.title, required this.chatId}) {
+  _ChatScreenState(
+      {required this.title, required this.chatId, required this.userName}) {
     _messages = <Message>[];
     FirebaseFirestore.instance
         .collection("messages")
@@ -62,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _buildMessage(Message message, bool isMe) {
-    print("Building Message" + message.content);
+    print("Building Message" + message.senderName);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,8 +177,8 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             onPressed: () {
               if (myController.value.text != '') {
-                addMessage(
-                    chatId, myController.value.text, '', getCurrentUserId());
+                addMessage(chatId, myController.value.text, userName,
+                    getCurrentUserId());
               }
             },
             icon: Icon(Icons.send),

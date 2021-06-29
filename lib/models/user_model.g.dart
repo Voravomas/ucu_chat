@@ -10,7 +10,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
   print(json["imageUrl"] == null);
   return User(
     id: json['id'] as String, //
-    name: json['name'] as String, //
+    name: (json['name'] as String).replaceAll("\'", "").replaceAll('\"', ""), //
     imageUrl: json['imgUrl'] as String, //
     occupation: json['occupation'] as String, //
     email: json['email'] as String, //
