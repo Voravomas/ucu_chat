@@ -165,6 +165,11 @@ class _AllChatsState extends State<AllChats> {
                   children: [
                     Row(
                       children: <Widget>[
+                        CircleAvatar(
+                          radius: 35.0,
+                          backgroundImage:
+                              AssetImage('assets/images/ucu_logo.png'),
+                        ),
                         SizedBox(
                           width: 10.0,
                         ),
