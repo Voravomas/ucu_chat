@@ -48,13 +48,14 @@ class _SearchUsersState extends State<SearchUsers> {
       _allUsers = snapshot.docs
           .map(
             (doc) => User(
-              id: doc.id,
-              name: doc.data()['name'],
-              occupation: doc.data()['occupation'],
-              imageUrl: doc.data()['imgUrl'],
-              phone: doc.data()['phone'],
-              email: doc.data()['email'],
-            ),
+                id: doc.id,
+                name: doc.data()['name'],
+                occupation: doc.data()['occupation'],
+                imageUrl: doc.data()['imgUrl'],
+                phone: doc.data()['phone'],
+                email: doc.data()['email'],
+                personalChatIds: doc.data()['personalChats'],
+                chatids: doc.data()['chatList']),
           )
           .toList();
     });

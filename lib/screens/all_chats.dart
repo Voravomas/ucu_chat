@@ -108,30 +108,82 @@ class AllChats extends StatefulWidget {
 }
 
 class _AllChatsState extends State<AllChats> {
-  List<Message> _chats = <Message>[];
+  late List<Map<String, dynamic>> _chats = [{}];
 
   int _limit = 20;
   _AllChatsState() {
-    loadMessagesFromJson().then((value) => updateChats(value));
-  }
-  void updateChats(List<Message> msgs) {
-    // print("updating" + (msgs.isEmpty ? "Empty" : "not empty"));
-    setState(() {
-      _chats.addAll(msgs);
-      // print("adding " + msgs.length.toString() + " messages");
+    updateChats();
+    FirebaseFirestore.instance
+        .collection("messages")
+        .snapshots()
+        .listen((event) {
+      print("UPDATING");
+      if (mounted) {
+        updateChats();
+      }
     });
+    // FirebaseFirestore.instance
+    // .collection("messages")
+    // loadMessagesFromJson().then((value) => updateChats(value));
+  }
+  void updateChats() async {
+    // print("updating" + (msgs.isEmpty ? "Empty" : "not empty"));
+    print("from update chats");
+    var snapshot =
+        await FirebaseFirestore.instance.collection("messages").get();
+
+    List<Map<String, dynamic>> chats = [];
+    final List<Map<String, dynamic>> mymap = snapshot.docs
+        .map((doc) => {"id": doc.id, "chatName": doc.data()["chatName"]})
+        .toList() as List<Map<String, dynamic>>;
+    mymap.forEach((element) {
+      print(element["chatName"]);
+    });
+    for (int i = 0; i < mymap.length; ++i) {
+      // var element =
+      var snapshotmsgs = await FirebaseFirestore.instance
+          .collection("messages")
+          .doc(mymap[i]["id"])
+          .collection("messages")
+          .orderBy("time", descending: true)
+          .get();
+      if (snapshotmsgs.docs.isNotEmpty) {
+        mymap[i]["messages"] =
+            snapshotmsgs.docs.map((e) => Message.fromDocument(e)).toList();
+        // print("MESSAGE: " + (mymap[i]["messages"][0] as Message).content);
+        chats.add(mymap[i]);
+      } else {
+        print("empty");
+      }
+      // chats.add(mymap[i]);
+    }
+
+    setState(() {
+      // print("setting chat");
+      // chats.removeAt(0);
+      _chats = chats;
+      // print("SETTIN STATE");
+      // print(_chats);
+    });
+    // chatsStream.forEach((element) {
+    //   print(element == null ? "is null" : 'not bull');
+    //   var el = element as Map<String, dynamic>;
+    //   print(el);
+    // });
     // print("updated");
   }
 
   Widget buildChats() {
     final instance = FirebaseFirestore.instance;
-    // final myEmail = instance.collection("users").doc(currentUser.id).da;
+
     return Container(
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection("users")
-            // .where("id", isNotEqualTo: "2I1Quum6s9Q2V3BIFE5U8ydS6ie2")
-            .limit(_limit)
+            .collection("messages")
+            // .doc()
+            // .collection(collectionPath)
+
+            // .limit(_limit)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
@@ -152,17 +204,25 @@ class _AllChatsState extends State<AllChats> {
 
   Widget chatListBuilder(AsyncSnapshot<QuerySnapshot> doc) {
     return ListView.builder(
-      itemCount: doc.data?.docs.length,
+      itemCount: _chats.length,
       itemBuilder: (BuildContext context, int index) {
-        DocumentSnapshot snap = doc.data?.docs[index] as DocumentSnapshot;
-        // print(snap.exists);
-        final User usr = User.fromDocument(snap) as User;
+        final chat = _chats[index];
+        final Message lastMessage = chat["messages"][0] != null
+            ? chat['messages'][0] as Message
+            : Message(
+                senderName: "senderName", time: "time", content: "content");
+        // print(_chats);
+        print(chat);
+        // snap.
+        // print(chat);
+        // final msgs = chat["messages"]? as List<Map<String, dynamic>>;
+        // print(msgs);
         return GestureDetector(
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => ChatScreen(
-                  user: usr,
+                  title: chat["chatName"],
                 ),
               )),
           child: Container(
@@ -180,37 +240,37 @@ class _AllChatsState extends State<AllChats> {
               children: [
                 Row(
                   children: <Widget>[
-                    CircleAvatar(
-                      radius: 35.0,
-                      backgroundImage: Image.network(usr.imageUrl,
-                          fit: BoxFit.cover,
-                          width: 50.0,
-                          height: 50.0, loadingBuilder: (BuildContext context,
-                              Widget child, ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          width: 50,
-                          height: 50,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: primaryColor,
-                              value: loadingProgress.expectedTotalBytes !=
-                                          null &&
-                                      loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          ),
-                        );
-                      }, errorBuilder: (context, object, stackTrace) {
-                        return Icon(
-                          Icons.account_circle,
-                          size: 50.0,
-                          color: greyColor,
-                        );
-                      }).image,
-                    ),
+                    // CircleAvatar(
+                    //   radius: 35.0,
+                    //   backgroundImage: Image.network(usr.imageUrl,
+                    //       fit: BoxFit.cover,
+                    //       width: 50.0,
+                    //       height: 50.0, loadingBuilder: (BuildContext context,
+                    //           Widget child, ImageChunkEvent? loadingProgress) {
+                    //     if (loadingProgress == null) return child;
+                    //     return Container(
+                    //       width: 50,
+                    //       height: 50,
+                    //       child: Center(
+                    //         child: CircularProgressIndicator(
+                    //           color: primaryColor,
+                    //           value: loadingProgress.expectedTotalBytes !=
+                    //                       null &&
+                    //                   loadingProgress.expectedTotalBytes != null
+                    //               ? loadingProgress.cumulativeBytesLoaded /
+                    //                   loadingProgress.expectedTotalBytes!
+                    //               : null,
+                    //         ),
+                    //       ),
+                    //     );
+                    //   }, errorBuilder: (context, object, stackTrace) {
+                    //     return Icon(
+                    //       Icons.account_circle,
+                    //       size: 50.0,
+                    //       color: greyColor,
+                    //     );
+                    //   }).image,
+                    // ),
                     SizedBox(
                       width: 10.0,
                     ),
@@ -218,7 +278,7 @@ class _AllChatsState extends State<AllChats> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          usr.name,
+                          chat['chatName'],
                           style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.bold,
@@ -230,7 +290,7 @@ class _AllChatsState extends State<AllChats> {
                         Container(
                           width: MediaQuery.of(context).size.width * 0.45,
                           child: Text(
-                            "chat.text",
+                            lastMessage.content,
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
@@ -246,7 +306,7 @@ class _AllChatsState extends State<AllChats> {
                 Column(
                   children: <Widget>[
                     Text(
-                      "chat.time",
+                      lastMessage.time,
                       style: TextStyle(
                         color: primaryColor,
                         fontWeight: FontWeight.bold,
@@ -267,6 +327,7 @@ class _AllChatsState extends State<AllChats> {
     // if (_chats.isEmpty) {
     //   loadMessagesFromJson().then((value) => updateChats(value));
     // }
+    // updateChats();
     return buildChats();
   }
 }

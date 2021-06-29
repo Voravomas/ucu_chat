@@ -16,13 +16,17 @@ class User {
   final String occupation;
   final String email;
   final String phone;
+  final List<String> chatids;
+  final List<Map<String, dynamic>> personalChatIds;
   User(
       {required this.id,
       required this.name,
       required this.imageUrl,
       required this.occupation,
       required this.email,
-      required this.phone});
+      required this.phone,
+      required this.chatids,
+      required this.personalChatIds});
 
   @override
   bool operator ==(other) =>

@@ -6,34 +6,32 @@ import 'package:ucuchat/models/user_model.dart';
 import 'package:ucuchat/net/api_methods.dart';
 
 class ChatScreen extends StatefulWidget {
-  final User user;
+  final String title;
 
-  ChatScreen({required this.user});
+  ChatScreen({required this.title});
   @override
-  _ChatScreenState createState() => _ChatScreenState(user);
+  _ChatScreenState createState() => _ChatScreenState(title: title);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   String _chatId = "";
-  late User user;
+  late String title;
   int _limit = 20;
-  _ChatScreenState(User usr) {
-    user = usr;
-  }
+  _ChatScreenState({required this.title});
   _buildMessage(Message message, bool isMe) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '${isMe ? currentUser.name : user.name}, ${message.time}',
+            '${message.senderName}, ${message.time}',
             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
           ),
           SizedBox(
             height: 5.0,
           ),
           Text(
-            message.text,
+            message.content,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
           ),
         ],
@@ -148,7 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.user.name,
+          title,
         ),
         elevation: 0.0,
       ),
